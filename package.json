@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
+		"build": "vite build && prisma migrate deploy",
 		"preview": "vite preview",
 		"start": "node build/index.js",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -23,7 +23,7 @@
 		"eslint-plugin-svelte3": "^4.0.0",
 		"prettier": "^2.6.2",
 		"prettier-plugin-svelte": "^2.7.0",
-		"prisma": "^4.3.1",
+		"prisma": "^4.4.0",
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.7.1",
 		"svelte-preprocess": "^4.10.6",
@@ -33,6 +33,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@prisma/client": "^4.3.1"
+		"@lucia-sveltekit/adapter-prisma": "^0.3.3",
+		"@prisma/client": "^4.4.0",
+		"lucia-sveltekit": "^0.9.1"
 	}
 }

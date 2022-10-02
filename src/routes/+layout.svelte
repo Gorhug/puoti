@@ -1,13 +1,19 @@
-<!-- <script lang="ts">
-	import type { LayoutData } from './$types';
+<script lang="ts">
+	import { handleSilentRefresh } from 'lucia-sveltekit/client';
 
-	export let data: LayoutData;
-</script> -->
+	handleSilentRefresh();
+	// import type { LayoutData } from './$types';
+
+	// export let data: LayoutData;
+</script>
 
 <header>
 	<nav>
 		<a href="/">Etusivu</a>
 		<a href="/yhteydenotto">Ota yhteyttä</a>
+		<a href="/login">Kirjaudu sisään</a>
+		<a href="/signup">Rekisteröidy</a>
+		
 	</nav>
 </header>
 <main>
