@@ -13,7 +13,6 @@
 		<a href="/yhteydenotto">Ota yhteyttä</a>
 		<a href="/login">Kirjaudu sisään</a>
 		<a href="/signup">Rekisteröidy</a>
-		
 	</nav>
 </header>
 <main>
@@ -22,6 +21,13 @@
 <footer>&copy; 2022 Ilkka Forsblom</footer>
 
 <style>
+	@import url('https://fonts.googleapis.com/css2?family=Lora&family=Satisfy&family=Raleway&display=swap');
+	:global(h1) {
+		font-family: 'Satisfy', cursive;
+	}
+	:global(p) {
+		font-family: 'Lora', serif;
+	}
 	footer {
 		position: fixed;
 		bottom: 0;
@@ -30,8 +36,10 @@
 		border-style: outset;
 		min-width: 100vw;
 		text-align: center;
+		font-family: 'Raleway', sans-serif;
 	}
 	nav {
+		font-family: 'Raleway', sans-serif;
 		overflow: hidden;
 		background-color: darkolivegreen;
 		/* Set the navbar to fixed position */
@@ -60,4 +68,6 @@
 	main {
 		margin-top: 50px;
 	}
+
+	/* fontit logolle: Satisfy ja Courgette */
 </style>

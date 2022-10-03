@@ -8,6 +8,6 @@ import { env } from "$env/dynamic/private";
 
 export const auth = lucia({
     adapter: prisma(client),
-    secret: import.meta.env.VITE_LUCIA_SECRET,
+    secret: env.LUCIA_SECRET,
     env: dev ? "DEV" : "PROD",
 });

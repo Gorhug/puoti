@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>Ota yhteyttä - Neilikka</title>
+    <title>Ota yhteyttä - Kirjontastudio Helmi</title>
 </svelte:head>
 
 <form method="post">
