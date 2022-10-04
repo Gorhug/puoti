@@ -7,6 +7,7 @@
 	const session = getSession();
 	// import { env as public_env } from '$env/dynamic/public';
 	import { PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
+	import { dataset_dev } from 'svelte/internal';
 	// export const cloudname = public_env.PUBLIC_CLOUD_NAME;
 	// export const apikey = public_env.PUBLIC_CLOUD_APIKEY;
 	//export let form: { error?: string; success?: string } | null;
@@ -79,7 +80,9 @@
 <div>
 	<p>Username: {$session?.user.username}</p>
 </div>
-
+<div>
+	<img src="{$page.data.avatar_url}" alt="avatar">
+</div>
 <div>
 	<button id="upload_widget" class="cloudinary-button" on:click="{cloud_widget.open()}">Vaihda avatarkuva</button>
 

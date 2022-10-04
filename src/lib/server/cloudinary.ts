@@ -1,6 +1,6 @@
 import { env as private_env } from "$env/dynamic/private";
 import { PUBLIC_CLOUD_NAME, PUBLIC_CLOUD_APIKEY } from "$env/static/public"
-import * as cloud from 'cloudinary'
+import { v2 as cloud } from 'cloudinary'
 export const cloudinary = cloud
 
 cloudinary.config({ 

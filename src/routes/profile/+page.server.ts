@@ -2,13 +2,22 @@ import { dev } from '$app/environment';
 import { auth } from '$lib/server/lucia';
 import { invalid, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { cloudinary } from '$lib/server/cloudinary';
 
 export const load: PageServerLoad = async ({ cookies, request }) => {
 	try {
-		await auth.validateRequestByCookie(request);
-		const notes = cookies.get('notes') || '';
+		const session = await auth.validateRequestByCookie(request);
+		const avatar_img = 'avatar/' + session.user.username + '.webp'
+		const avatar_url = cloudinary.url(avatar_img,
+			{
+				transformation: [
+					{ width: 200, crop: "scale" }
+				],
+				default_image: 'no_avatar.webp'
+			})
+		
 		return {
-			notes
+			avatar_url
 		};
 	} catch {
 		throw redirect(302, '/login');
