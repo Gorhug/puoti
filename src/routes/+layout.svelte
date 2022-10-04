@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { handleSilentRefresh } from 'lucia-sveltekit/client';
-
+	import { handleSilentRefresh, getSession } from 'lucia-sveltekit/client';
+	const session = getSession();
+	
 	handleSilentRefresh();
 	// import type { LayoutData } from './$types';
-
+	
 	// export let data: LayoutData;
 </script>
 
@@ -11,8 +12,12 @@
 	<nav>
 		<a href="/">Etusivu</a>
 		<a href="/yhteydenotto">Ota yhteyttä</a>
+		{#if $session}
+		<a href="/profile">{$session?.user.username}</a>
+		{:else}
 		<a href="/login">Kirjaudu sisään</a>
-		<a href="/signup">Rekisteröidy</a>
+		{/if}
+
 	</nav>
 </header>
 <main>

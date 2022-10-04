@@ -35,6 +35,7 @@
 	"dependencies": {
 		"@lucia-sveltekit/adapter-prisma": "^0.3.3",
 		"@prisma/client": "^4.4.0",
+		"cloudinary": "^1.32.0",
 		"lucia-sveltekit": "^0.9.1"
 	}
 }

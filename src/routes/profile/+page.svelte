@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { signOut, getSession } from 'lucia-sveltekit/client';
-	// import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
 	const session = getSession();
-
-	export let form: { error?: string; success?: string } | null;
+	// import { env as public_env } from '$env/dynamic/public';
+	import { PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
+	// export const cloudname = public_env.PUBLIC_CLOUD_NAME;
+	// export const apikey = public_env.PUBLIC_CLOUD_APIKEY;
+	//export let form: { error?: string; success?: string } | null;
 
 	// let number = 'fetching...';
 
@@ -29,32 +33,56 @@
 	// onMount(fetchNumber);
 
 	let addAccessTokenToFrom = true;
+	let cloud_widget;
+	async function generateSignature(cb, data_to_sign) {
+		const heads = new Headers();
+		heads.append('Authorization', `Bearer ${$session?.access_token}`);
+		heads.append('content-type', 'application/json');
+		var requestOptions = {
+			method: 'POST',
+			headers: heads,
+			body: JSON.stringify(data_to_sign)
+		};
+
+		const response = await fetch('/api/signrequest', requestOptions);
+		const data = await response.json();
+		if (data.error) {
+			console.log(data.error);
+			cb(false);
+		} else cb(data.signature);
+	}
+	function createWidget() {
+		 cloud_widget = cloudinary.createUploadWidget( {
+				api_key:  PUBLIC_CLOUD_APIKEY ,
+				cloudName:  PUBLIC_CLOUD_NAME ,
+				uploadSignature:  generateSignature,
+				cropping: true,
+				sources: ["local"],
+				multiple: false,
+				folder: "avatar",
+				publicId: $session?.user.username,
+				tags: ["users", "profile", "avatar"],
+				resourseType: 'image',
+				maxImageFileSize: 2000000, 
+				maxImageWidth: 2000
+			});
+	}
+	
 </script>
 
-<h1>Profile</h1>
-<p>This page is protected and can only be accessed by authenticated users.</p>
+<svelte:head>
+	<script src="https://upload-widget.cloudinary.com/global/all.js" on:load="{createWidget()}"></script>
+</svelte:head>
+
+<h2>Profile</h2>
+
 <div>
-	<p>User id: {$session?.user.user_id}</p>
 	<p>Username: {$session?.user.username}</p>
-	<!-- <p>Random number API: {number}</p> -->
 </div>
 
 <div>
-	<h2>Notes</h2>
-	<div class="ignore w-full">
-		<label for="add_auth">Include access token</label>
-		<input type="checkbox" id="add_auth" class="checkbox" bind:checked={addAccessTokenToFrom} />
-	</div>
-	<form method="post" use:enhance>
-		{#if addAccessTokenToFrom}
-			<input value={$session?.access_token} name="_lucia" type="hidden" />
-		{/if}
-		<input value={$page.data.notes} name="notes" />
-		<input type="submit" value="Save" class="button" />
-		{#if form?.error}
-			<p class="error">{form?.error}</p>
-		{/if}
-	</form>
+	<button id="upload_widget" class="cloudinary-button" on:click="{cloud_widget.open()}">Vaihda avatarkuva</button>
+
 </div>
 
 <button on:click={() => signOut('/')}>Sign out</button>
