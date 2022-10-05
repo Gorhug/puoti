@@ -18,6 +18,24 @@ model Viesti {
   @@id([email, milloin])
 }
 
+model TuoteKategoria {
+  kategoria_id    String @default(cuid()) @id
+  nimi            String @unique
+  kuvaus          String?
+  tuotteet        Tuote[]
+}
+
+model Tuote {
+  tuote_id      String @default(cuid()) @id
+  nimi          String @unique
+  kuvaus        String?
+  hinta         Decimal
+  kategoriat    TuoteKategoria[]
+  luoja         User @relation(fields: [luoja_id], references: [id])
+  luoja_id      String
+  luotu         DateTime @default(now())
+}
+
 model User {
   id               String         @id @unique
   identifier_token String         @unique
@@ -25,6 +43,7 @@ model User {
   RefreshToken     RefreshToken[]
   username         String
   email            String?
+  tuotteet         Tuote[]
   @@map("user")
 }
 

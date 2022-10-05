@@ -1,5 +1,7 @@
 <h1>Kirjontastudio Helmi</h1>
 
+<a href="/kategoria">Tuotekategoriat</a>
+
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam varius
     commodo facilisis. Donec ac elit vitae dui luctus fermentum. Cras non
     augue id massa placerat tempus a at leo. Aliquam rutrum sem massa.

@@ -62,6 +62,7 @@
 				multiple: false,
 				folder: "avatar",
 				publicId: $session?.user.username,
+				overwrite: true,
 				tags: ["users", "profile", "avatar"],
 				resourseType: 'image',
 				maxImageFileSize: 2000000, 
