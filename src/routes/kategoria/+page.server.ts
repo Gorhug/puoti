@@ -1,6 +1,8 @@
 import type { PageServerLoad, Actions } from './$types';
 import { prisma_client, auth } from '$lib/server/lucia';
 import { invalid } from '@sveltejs/kit';
+import slug from 'slug'
+
 
 export const load: PageServerLoad = async () => {
     const kategoriat = prisma_client.tuoteKategoria.findMany()
@@ -21,7 +23,7 @@ export const actions: Actions = {
         const data = await request.formData()
         let nimi = data.get('nimi')
         let kuvaus = data.get('kuvaus')
-        kuvaus = kuvaus? kuvaus.toString() : ''
+        kuvaus = kuvaus? kuvaus.toString().trim() : ''
 
         if (!nimi) {
             nimi = ''
@@ -30,11 +32,12 @@ export const actions: Actions = {
                 nimi, kuvaus
             })
         }
-        nimi = nimi.toString()
-
+        nimi = nimi.toString().trim()
+        const kategoria_id = slug(nimi)
         try {
             const res = await prisma_client.tuoteKategoria.create({
                 data: {
+                    kategoria_id: kategoria_id,
                     nimi: nimi,
                     kuvaus: kuvaus
                 }
