@@ -4,7 +4,7 @@
     import type { ActionData } from './$types'
     export let form : ActionData;
     export let data: PageData;
-    data.tuotteet = JSON.parse(data.tuotteet)
+    // data.tuotteet = JSON.parse(data.tuotteet)
     export const session = getSession()
 </script>
 <h2>Tuotekategoriat</h2>
@@ -40,7 +40,7 @@
     <tbody>
         {#each data.tuotteet as t}
             <tr>
-                <td>{t.nimi??''}</td><td>{t.kuvaus?? ''}</td><td>{Number.parseFloat(t.hinta).toFixed(2)}</td>
+                <td>{t.nimi}</td><td>{t.kuvaus?? ''}</td><td>{t.hinta}</td>
             </tr>
         {/each}
     </tbody>

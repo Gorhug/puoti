@@ -3,22 +3,25 @@ import { prisma_client, auth } from '$lib/server/lucia';
 import { invalid } from '@sveltejs/kit';
 import slug from 'slug'
 import { npm_config_init_module } from '$env/static/private';
-
+import type { Tuote } from '@prisma/client';
+import { Decimal } from '@prisma/client/runtime';
 
 const required = new Set(['nimi', 'hinta', 'hinta'])
 const optional = ['kuvaus']
 const expected = new Set([...required, ...optional])
 
-export const load: PageServerLoad = async () => {
-    const tuotteet = await prisma_client.tuote.findMany({
-        select: {
-            nimi: true,
-            kuvaus: true,
-            hinta: true
-        }})
-    const ret = JSON.stringify(tuotteet)
+function tuoteMapper(t: Tuote) {
     return {
-          tuotteet: ret
+        nimi: t.nimi,
+        kuvaus: t.kuvaus,
+        hinta: t.hinta.toFixed(2)
+    }
+}
+
+export const load: PageServerLoad = async () => {
+    const tuotteet = await prisma_client.tuote.findMany()
+    return {
+          tuotteet: tuotteet.map(tuoteMapper)
     };
 };
 
@@ -53,15 +56,16 @@ export const actions: Actions = {
 
         const form = processForm(await request.formData())
         const data = form.entries
-        let missing = form.missing
+        const missing = form.missing
 
 
 
         let hinta = data.get('hinta') ?? ''
-        hinta = Number.parseFloat(hinta).toFixed(2)
-        if (Number.isNaN(hinta)) {
-            errors.push('Hinta ei ole numero')
-        }
+        try {
+            hinta = new Decimal(hinta).toFixed(2)
+        } catch (e)  {
+            errors.push('Hinnan pitää olla numero')
+        } 
         const nimi = data.get('nimi') ?? ''
 
         const tuote = {
