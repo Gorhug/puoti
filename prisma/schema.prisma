@@ -19,22 +19,24 @@ model Viesti {
 }
 
 model TuoteKategoria {
-  kategoria_id    String @default(cuid()) @id
-  nimi            String @unique
-  kuvaus          String?
-  tuotteet        Tuote[]
+  kategoria_id String    @id @default(cuid())
+  nimi         String    @unique
+  kuvaus       String?
+  tuotteet     Tuote[]
+  luotu        DateTime  @default(now())
+  paivitetty   DateTime? @updatedAt
 }
 
 model Tuote {
-  tuote_id      String @default(cuid()) @id
-  nimi          String @unique
-  kuvaus        String?
-  hinta         Decimal
-  kategoriat    TuoteKategoria[]
-  luoja         User @relation(fields: [luoja_id], references: [id])
-  luoja_id      String
-  luotu         DateTime @default(now())
-  paivitetty    DateTime @updatedAt
+  tuote_id   String           @id @default(cuid())
+  nimi       String           @unique
+  kuvaus     String?
+  hinta      Decimal
+  kategoriat TuoteKategoria[]
+  luoja      User             @relation(fields: [luoja_id], references: [id])
+  luoja_id   String
+  luotu      DateTime         @default(now())
+  paivitetty DateTime?        @updatedAt
 }
 
 model User {
@@ -45,6 +47,9 @@ model User {
   username         String         @unique
   email            String?
   tuotteet         Tuote[]
+  luotu            DateTime       @default(now())
+  paivitetty       DateTime?      @updatedAt
+
   @@map("user")
 }
 
