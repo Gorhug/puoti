@@ -20,13 +20,13 @@
         <input type="hidden" name="_lucia" value="{$session?.access_token}">
 
         <label for="nimi">Tuotteen nimi</label>
-        <input name="nimi" required value="{form?.tuote?.nimi ?? ''}">
+        <input id="nimi" name="nimi" required value="{form?.tuote?.nimi ?? ''}">
 
         <label for="hinta">Tuotteen hinta</label>
-        <input name="hinta" type="number" step="0.01" required value="{form?.tuote?.hinta ?? '9.99'}">
+        <input id="hinta" name="hinta" type="number" step="0.01" required value="{form?.tuote?.hinta ?? '9.99'}">
 
         <label for="kuvaus">Kuvaus</label>
-        <textarea name="kuvaus">{form?.tuote?.kuvaus ?? ''}</textarea>
+        <textarea id="kuvaus" name="kuvaus">{form?.tuote?.kuvaus ?? ''}</textarea>
 
 
         <input type="submit" name="submit" value="Lisää tuote">
@@ -40,7 +40,7 @@
     <tbody>
         {#each data.tuotteet as t}
             <tr>
-                <td>{t.nimi}</td><td>{t.kuvaus?? ''}</td><td>{t.hinta}</td>
+                <td><a href="/tuote/{t.tuote_id}">{t.nimi}</a></td><td>{t.kuvaus?? ''}</td><td>{t.hinta}</td>
             </tr>
         {/each}
     </tbody>

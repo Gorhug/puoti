@@ -5,33 +5,9 @@
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	const session = getSession();
-	// import { env as public_env } from '$env/dynamic/public';
+	
 	import { PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
-	import { dataset_dev } from 'svelte/internal';
-	// export const cloudname = public_env.PUBLIC_CLOUD_NAME;
-	// export const apikey = public_env.PUBLIC_CLOUD_APIKEY;
-	//export let form: { error?: string; success?: string } | null;
 
-	// let number = 'fetching...';
-
-	// const fetchNumber = async () => {
-	// 	const response = await fetch('/api/random-number', {
-	// 		headers: {
-	// 			Authorization: `Bearer ${$session?.access_token}`
-	// 		}
-	// 	});
-	// 	const result = await response.json();
-	// 	if (result.error) {
-	// 		console.error(result.error);
-	// 		return;
-	// 	}
-	// 	await new Promise((resolve) => {
-	// 		setTimeout(resolve, 1000);
-	// 	});
-	// 	number = result.number;
-	// };
-
-	// onMount(fetchNumber);
 
 	let addAccessTokenToFrom = true;
 	let cloud_widget;

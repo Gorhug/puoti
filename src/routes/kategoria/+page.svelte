@@ -18,9 +18,9 @@
         {/if}
         <input type="hidden" name="_lucia" value="{$session?.access_token}">
         <label for="nimi">Kategorian nimi</label>
-        <input name="nimi" required value="{form?.nimi ?? ''}">
+        <input id="nimi" name="nimi" required value="{form?.nimi ?? ''}">
         <label for="kuvaus">Kuvaus</label>
-        <textarea name="kuvaus">{form?.kuvaus ?? ''}</textarea>
+        <textarea id="kuvaus" name="kuvaus">{form?.kuvaus ?? ''}</textarea>
         <input type="submit" name="submit" value="Lisää kategoria">
     </form>
 {/if}

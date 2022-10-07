@@ -1,0 +1,10 @@
+<script lang="ts">
+    import type { PageData } from './$types';
+    
+    export let data: PageData;
+</script>
+<h2>{data.tuote_nimi}</h2>
+<ul>
+    <li>Luoja: <a href="/profile/{data.luoja_id}">{data.luoja}</a></li>
+    <li>Luotu: {new Intl.DateTimeFormat('fi-FI', {timeStyle: 'short', dateStyle: 'full'}).format(data.luotu)}</li>
+</ul>

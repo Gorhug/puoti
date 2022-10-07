@@ -8,7 +8,7 @@
 	export let form: { message?: string };
 </script>
 
-<h1>Create an account</h1>
+<h2>Create an account</h2>
 <form
 	method="post"
 	use:enhance={({ data, cancel }) => {
@@ -29,11 +29,11 @@
 		};
 	}}
 >
-	<label for="username">username</label><br />
-	<input id="username" name="username" /><br />
-	<label for="password">password</label><br />
-	<input type="password" id="password" name="password" /><br />
+	<label for="username">käyttäjänimi (sallittu: aakkoset a-z, numerot, väliviiva)</label><br />
+	<input id="username" name="username" pattern="/^[a-z0-9-]$/g" minlength="4" maxlength="32"/><br />
+	<label for="password">salasana</label><br />
+	<input type="password" id="password" name="password" minlength="8" maxlength="128"/><br />
 	<input type="submit" value="Continue" class="button" />
 </form>
 <p class="error">{form?.message || ''}</p>
-<a href="/login" class="link">Sign in</a>
+<a href="/login" class="link">Kirjaudu sisään</a>
