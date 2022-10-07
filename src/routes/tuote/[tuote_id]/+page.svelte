@@ -5,6 +5,6 @@
 </script>
 <h2>{data.tuote_nimi}</h2>
 <ul>
-    <li>Luoja: <a href="/profile/{data.luoja_id}">{data.luoja}</a></li>
+    <li>Luoja: <a href="/profile/{data.luoja}">{data.luoja}</a></li>
     <li>Luotu: {new Intl.DateTimeFormat('fi-FI', {timeStyle: 'short', dateStyle: 'full'}).format(data.luotu)}</li>
 </ul>

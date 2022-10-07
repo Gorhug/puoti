@@ -34,6 +34,7 @@ model Tuote {
   luoja         User @relation(fields: [luoja_id], references: [id])
   luoja_id      String
   luotu         DateTime @default(now())
+  paivitetty    DateTime @updatedAt
 }
 
 model User {
