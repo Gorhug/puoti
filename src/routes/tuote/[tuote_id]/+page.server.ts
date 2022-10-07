@@ -20,5 +20,5 @@ export const load: PageServerLoad = async ({ request, params }) => {
         luoja = luojaData.username
     }
     
-    return { tuote_id, tuote_nimi: tuote.nimi, luoja, luotu: tuote.luotu};
+    return { tuote_id, tuote_nimi: tuote.nimi, luoja, luotu: tuote.luotu, paivitettu: tuote.paivitetty};
 };
