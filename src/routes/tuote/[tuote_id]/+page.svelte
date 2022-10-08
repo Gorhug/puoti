@@ -9,6 +9,7 @@
 	import { PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
 
 	let cloud_widget;
+	let gallery_widget;
 	async function generateSignature(cb, data_to_sign) {
 		const heads = new Headers();
 		heads.append('Authorization', `Bearer ${$session?.access_token}`);
@@ -45,6 +46,26 @@
 			});
 		}
 	}
+	function createGallery() {
+		gallery_widget = cloudinary.galleryWidget({
+			cloudName: PUBLIC_CLOUD_NAME,
+			mediaAssets: [
+				{
+					tag: data.tuote_id,
+					mediaType: 'image'
+				}
+			],
+			displayProps: {
+				mode: 'expanded'
+			},
+			navigationButtonProps: {
+				color: '#FFFFFF',
+				iconColor: '#000000'
+			},
+			container: '#my-gallery'
+		});
+		gallery_widget.render();
+	}
 </script>
 
 <h2>{data.tuote_nimi}</h2>
@@ -64,7 +85,6 @@
 		</li>
 	{/if}
 </ul>
-
 {#if data.luoja == $session?.user.username}
 	{#if browser}
 		<script
@@ -77,3 +97,18 @@
 		>
 	</div>
 {/if}
+<div id="my-gallery" />
+{#if browser}
+	<script src="https://product-gallery.cloudinary.com/all.js" on:load={createGallery}>
+	</script>
+{/if}
+
+<style>
+	#my-gallery {
+		width: 50vw;
+		height: 25vh;
+	}
+	button {
+		display: block;
+	}
+</style>
