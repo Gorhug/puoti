@@ -9,7 +9,6 @@
 	import { PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
 
 
-	let addAccessTokenToFrom = true;
 	let cloud_widget;
 	async function generateSignature(cb, data_to_sign) {
 		const heads = new Headers();
@@ -34,11 +33,11 @@
 				cloudName:  PUBLIC_CLOUD_NAME ,
 				uploadSignature:  generateSignature,
 				cropping: true,
-				sources: ["local"],
+				sources: ["local", "unsplash"],
 				multiple: false,
 				folder: "avatar",
+				croppingAspectRatio: 1.0,
 				publicId: $session?.user.username,
-				overwrite: true,
 				tags: ["users", "profile", "avatar"],
 				resourseType: 'image',
 				maxImageFileSize: 2000000, 

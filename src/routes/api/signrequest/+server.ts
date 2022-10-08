@@ -10,7 +10,7 @@ export const POST: RequestHandler = async ({ request }) => {
         const session = await auth.validateRequest(request);
         const data = await request.json();
         const api_secret = env.CLOUD_SECRET;
- 
+        // console.log(data)
         const signature = cloudinary.utils.api_sign_request(data, api_secret)
         return json({ signature: signature })
     } catch {
