@@ -30,9 +30,9 @@
 	}}
 >
 	<label for="username">käyttäjänimi (sallittu: aakkoset a-z, numerot, väliviiva)</label><br />
-	<input id="username" name="username" pattern="/^[a-z0-9-]$/g" minlength="4" maxlength="32"/><br />
+	<input id="username" name="username" pattern="^[a-z0-9-]+$" minlength="4" maxlength="32"/><br />
 	<label for="password">salasana</label><br />
-	<input type="password" id="password" name="password" minlength="8" maxlength="128"/><br />
+	<input type="password" id="password" name="password" minlength="4" maxlength="128"/><br />
 	<input type="submit" value="Continue" class="button" />
 </form>
 <p class="error">{form?.message || ''}</p>
