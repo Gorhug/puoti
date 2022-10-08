@@ -3,7 +3,7 @@ import { prisma_client, auth } from '$lib/server/lucia';
 import { invalid } from '@sveltejs/kit';
 import slug from 'slug'
 import { npm_config_init_module } from '$env/static/private';
-import type { Tuote } from '@prisma/client';
+import type { Tuote, Prisma } from '@prisma/client';
 
 
 const required = new Set(['nimi', 'hinta', 'hinta'])
@@ -63,7 +63,7 @@ export const actions: Actions = {
 
         let hinta = data.get('hinta') ?? ''
         try {
-            hinta = new Decimal(hinta).toFixed(2)
+            hinta = new Prisma.Decimal(hinta).toFixed(2)
         } catch (e)  {
             errors.push('Hinnan pitää olla numero')
         } 
