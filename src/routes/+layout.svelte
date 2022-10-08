@@ -1,13 +1,23 @@
-<!-- <script lang="ts">
-	import type { LayoutData } from './$types';
-
-	export let data: LayoutData;
-</script> -->
+<script lang="ts">
+	import { handleSilentRefresh, getSession } from 'lucia-sveltekit/client';
+	const session = getSession();
+	
+	handleSilentRefresh();
+	// import type { LayoutData } from './$types';
+	
+	// export let data: LayoutData;
+</script>
 
 <header>
 	<nav>
 		<a href="/">Etusivu</a>
 		<a href="/yhteydenotto">Ota yhteyttä</a>
+		{#if $session}
+		<a href="/profile">{$session?.user.username}</a>
+		{:else}
+		<a href="/login">Kirjaudu sisään</a>
+		{/if}
+
 	</nav>
 </header>
 <main>
@@ -16,6 +26,13 @@
 <footer>&copy; 2022 Ilkka Forsblom</footer>
 
 <style>
+	@import url('https://fonts.googleapis.com/css2?family=Lora&family=Satisfy&family=Raleway&display=swap');
+	:global(h1) {
+		font-family: 'Satisfy', cursive;
+	}
+	:global(p) {
+		font-family: 'Lora', serif;
+	}
 	footer {
 		position: fixed;
 		bottom: 0;
@@ -24,8 +41,10 @@
 		border-style: outset;
 		min-width: 100vw;
 		text-align: center;
+		font-family: 'Raleway', sans-serif;
 	}
 	nav {
+		font-family: 'Raleway', sans-serif;
 		overflow: hidden;
 		background-color: darkolivegreen;
 		/* Set the navbar to fixed position */
@@ -54,4 +73,33 @@
 	main {
 		margin-top: 50px;
 	}
+
+	:global(form) {
+    display: flex;
+    flex-direction: column;
+}
+
+:global(input:invalid+span::after,
+textarea:invalid+span::after) {
+    content: '❗';
+    color: red;
+    padding-left: 5px;
+}
+
+:global(input:valid+span::after) {
+    color: green;
+    content: '✓';
+    padding-left: 5px;
+}
+
+:global(.req) {
+    display: grid;
+    grid-template-columns: 90% 10%;
+}
+
+:global(textarea) {
+    height: 10em;
+}
+
+	/* fontit logolle: Satisfy ja Courgette */
 </style>
