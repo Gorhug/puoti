@@ -74,5 +74,32 @@
 		margin-top: 50px;
 	}
 
+	:global(form) {
+    display: flex;
+    flex-direction: column;
+}
+
+:global(input:invalid+span::after,
+textarea:invalid+span::after) {
+    content: '❗';
+    color: red;
+    padding-left: 5px;
+}
+
+:global(input:valid+span::after) {
+    color: green;
+    content: '✓';
+    padding-left: 5px;
+}
+
+:global(.req) {
+    display: grid;
+    grid-template-columns: 90% 10%;
+}
+
+:global(textarea) {
+    height: 10em;
+}
+
 	/* fontit logolle: Satisfy ja Courgette */
 </style>

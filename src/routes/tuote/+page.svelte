@@ -45,7 +45,3 @@
         {/each}
     </tbody>
 </table>
-
-<style>
-    @import url('/form.css');
-</style>
