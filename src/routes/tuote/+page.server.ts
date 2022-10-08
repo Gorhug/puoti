@@ -3,8 +3,8 @@ import { prisma_client, auth } from '$lib/server/lucia';
 import { invalid } from '@sveltejs/kit';
 import slug from 'slug'
 import { npm_config_init_module } from '$env/static/private';
-import type { Tuote, Prisma } from '@prisma/client';
-
+import type { Tuote } from '@prisma/client';
+import { Prisma } from '@prisma/client'
 
 const required = new Set(['nimi', 'hinta', 'hinta'])
 const optional = ['kuvaus']
