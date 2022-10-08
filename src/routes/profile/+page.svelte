@@ -47,9 +47,9 @@
 	
 </script>
 
-<svelte:head>
-	<script src="https://upload-widget.cloudinary.com/global/all.js" on:load="{createWidget()}"></script>
-</svelte:head>
+{#if browser}
+	<script src="https://upload-widget.cloudinary.com/global/all.js" on:load={createWidget}></script>
+{/if}
 
 <h2>Profile</h2>
 
@@ -60,7 +60,7 @@
 	<img src="{$page.data.avatar_url}" alt="avatar">
 </div>
 <div>
-	<button id="upload_widget" class="cloudinary-button" on:click="{cloud_widget.open()}">Vaihda avatarkuva</button>
+	<button id="upload_widget" class="cloudinary-button" on:click={cloud_widget.open}>Vaihda avatarkuva</button>
 
 </div>
 

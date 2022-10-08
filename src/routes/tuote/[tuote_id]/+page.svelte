@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { getSession } from 'lucia-sveltekit/client';
+	import { browser } from '$app/environment';
 	const session = getSession();
 
 	export let data: PageData;
@@ -12,7 +13,7 @@
 		const heads = new Headers();
 		heads.append('Authorization', `Bearer ${$session?.access_token}`);
 		heads.append('content-type', 'application/json');
-        // console.log(data_to_sign)
+		// console.log(data_to_sign)
 		var requestOptions = {
 			method: 'POST',
 			headers: heads,
@@ -63,14 +64,16 @@
 		</li>
 	{/if}
 </ul>
-<svelte:head>
-	<script
-		src="https://upload-widget.cloudinary.com/global/all.js"
-		on:load={createWidget()}></script>
-</svelte:head>
-{#if data.luoja == $session?.user.username}
-<div>
-	<button id="upload_widget" class="cloudinary-button" on:click="{cloud_widget.open()}">Lisää kuvia</button>
-</div>
 
+{#if data.luoja == $session?.user.username}
+	{#if browser}
+		<script
+			src="https://upload-widget.cloudinary.com/global/all.js"
+			on:load={createWidget}></script>
+	{/if}
+	<div>
+		<button id="upload_widget" class="cloudinary-button" on:click={cloud_widget.open}
+			>Lisää kuvia</button
+		>
+	</div>
 {/if}
