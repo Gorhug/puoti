@@ -6,10 +6,12 @@
 	import { applyAction, enhance } from '$app/forms';
 
 	export let form: { message?: string };
+	const inputStyle = 'border border-slate-900 text-black';
 </script>
 
-<h2>Create an account</h2>
+<h2 class="text-xl">Luo käyttäjätili:</h2>
 <form
+	class="space-y-4 mt-8"
 	method="post"
 	use:enhance={({ data, cancel }) => {
 		form = {};
@@ -29,11 +31,43 @@
 		};
 	}}
 >
-	<label for="username">käyttäjänimi (sallittu: aakkoset a-z, numerot, väliviiva)</label><br />
-	<input id="username" name="username" pattern="^[a-z0-9-]+$" minlength="4" maxlength="32"/><br />
-	<label for="password">salasana</label><br />
-	<input type="password" id="password" name="password" minlength="4" maxlength="128"/><br />
-	<input type="submit" value="Continue" class="button" />
+	<div>
+		<label for="username">käyttäjänimi:</label><br />
+		<input
+			class="peer {inputStyle}"
+			id="username"
+			name="username"
+			pattern="^[a-z0-9-]+$"
+			required
+			minlength="4"
+			maxlength="32"
+		/>
+		<span class="peer-invalid:after:content-['❗'] peer-valid:after:content-['✅']" /><br />
+		<span class="w-fit bg-red-500 peer-invalid:block hidden"
+			>4-32 merkkiä, sallitut merkit: pienet aakkoset a-z, numerot, väliviiva</span
+		>
+	</div>
+	<div>
+		<label for="password">salasana: </label><br />
+		<input
+			class="peer {inputStyle}"
+			type="password"
+			id="password"
+			name="password"
+			required
+			minlength="8"
+			maxlength="128"
+		/>
+		<span class="peer-invalid:after:content-['❗'] peer-valid:after:content-['✅']" /><br />
+		<p class="w-fit bg-red-500 peer-invalid:block hidden">
+			vähintään 8 merkkiä (ei merkkirajoituksia)
+		</p>
+	</div>
+	<input type="submit" value="Luo tili" class="button p-2 my-4 dark:bg-white {inputStyle}" />
 </form>
 <p class="error">{form?.message || ''}</p>
-<a href="/login" class="link">Kirjaudu sisään</a>
+<p class="mt-8">
+	<a class="font-semibold font-sans hover:text-black italic hover:underline" href="/login"
+		>Kirjaudu sisään</a
+	>
+</p>

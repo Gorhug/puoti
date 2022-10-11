@@ -2,10 +2,11 @@
 	import { applyAction, enhance } from '$app/forms';
 
 	export let form: { message?: string };
+	const inputStyle = "border border-slate-900 text-black"
 </script>
 
 <div>
-	<h1>Sign in</h1>
+	<h1 class="text-xl py-4">Kirjaudu sisään:</h1>
 	<form
 		method="post"
 		use:enhance={({ data, cancel }) => {
@@ -26,12 +27,14 @@
 			};
 		}}
 	>
-		<label for="username">username</label><br />
-		<input id="username" name="username" /><br />
-		<label for="password">password</label><br />
-		<input type="password" id="password" name="password" /><br />
-		<input type="submit" value="Continue" class="button" />
+		<label for="username">Käyttäjänimi:</label><br />
+		<input class="{inputStyle}" id="username" name="username" /><br />
+		<label for="password">Salasana:</label><br />
+		<input class="{inputStyle}" type="password" id="password" name="password" /><br />
+		<input class="{inputStyle} button p-2 mt-4 dark:bg-white" type="submit" value="Kirjaudu" />
 	</form>
 	<p class="error">{form?.message || ''}</p>
-	<a href="/signup" class="link">Create a new account</a>
+	<p class="mt-8">
+	<a class="font-semibold font-sans hover:text-black italic hover:underline" href="/signup">Luo uusi tili</a>
+	</p>
 </div>
