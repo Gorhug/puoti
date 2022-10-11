@@ -35,7 +35,7 @@
 				cloudName: PUBLIC_CLOUD_NAME,
 				uploadSignature: generateSignature,
 				cropping: false,
-				sources: ['local', 'unsplash'],
+				sources: ['unsplash'],
 				multiple: true,
 				maxFiles: 5,
 				folder: 'tuote/' + data.tuote_id,
@@ -90,19 +90,22 @@
 		<script
 			src="https://upload-widget.cloudinary.com/global/all.js"
 			on:load={createWidget}></script>
-	{/if}
-	<div>
-		<button id="upload_widget" class="cloudinary-button" on:click={cloud_widget.open}
-			>Lisää kuvia</button
-		>
-	</div>
-{/if}
-<div id="my-gallery" />
-{#if browser}
-	<script src="https://product-gallery.cloudinary.com/all.js" on:load={createGallery}>
-	</script>
-{/if}
 
+		<div>
+			<button id="upload_widget" class="cloudinary-button" on:click={cloud_widget.open}
+				>Lisää kuvia</button
+			>
+		</div>
+	{/if}
+{/if}
+<div id="my-gallery">
+{#if browser}
+
+		<script src="https://product-gallery.cloudinary.com/all.js" on:load={createGallery}>
+		</script>
+
+{/if}
+</div>
 <style>
 	#my-gallery {
 		width: 50vw;

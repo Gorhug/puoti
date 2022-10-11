@@ -6,11 +6,13 @@
     export let data: PageData;
     // data.tuotteet = JSON.parse(data.tuotteet)
     export const session = getSession()
+    const inputStyle = "border border-slate-900 text-black"
 </script>
-<h2>Tuotekategoriat</h2>
+<h2 class="text-2xl text-center pb-5">Tuotteet</h2>
 
 {#if $session}
-    <form method="post">
+<h3 class="text-xl pb-3">Lisää tuote:</h3>
+    <form method="post" class="flex flex-col px-8">
         {#if form?.error}
             <p>Virhe: {form?.error} </p>
         {/if}
@@ -20,13 +22,13 @@
         <input type="hidden" name="_lucia" value="{$session?.access_token}">
 
         <label for="nimi">Tuotteen nimi</label>
-        <input id="nimi" name="nimi" required value="{form?.tuote?.nimi ?? ''}">
+        <input class="{inputStyle}" id="nimi" name="nimi" required value="{form?.tuote?.nimi ?? ''}">
 
         <label for="hinta">Tuotteen hinta</label>
-        <input id="hinta" name="hinta" type="number" step="0.01" required value="{form?.tuote?.hinta ?? '9.99'}">
+        <span><input class="{inputStyle} w-20" id="hinta" name="hinta" type="number" step="0.01" required value="{form?.tuote?.hinta ?? '9.99'}"> &euro;</span>
 
         <label for="kuvaus">Kuvaus</label>
-        <textarea id="kuvaus" name="kuvaus">{form?.tuote?.kuvaus ?? ''}</textarea>
+        <textarea class="{inputStyle}" id="kuvaus" name="kuvaus">{form?.tuote?.kuvaus ?? ''}</textarea>
 
 
         <input type="submit" name="submit" value="Lisää tuote">
@@ -40,7 +42,7 @@
     <tbody>
         {#each data.tuotteet as t}
             <tr>
-                <td><a href="/tuote/{t.tuote_id}">{t.nimi}</a></td><td>{t.kuvaus?? ''}</td><td>{t.hinta}</td>
+                <td><a class="hover:underline tracking-tighter italic" href="/tuote/{t.tuote_id}">{t.nimi}</a></td><td>{t.kuvaus?? ''}</td><td>{t.hinta}</td>
             </tr>
         {/each}
     </tbody>
