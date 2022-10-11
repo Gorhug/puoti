@@ -1,105 +1,112 @@
 <script lang="ts">
 	import { handleSilentRefresh, getSession } from 'lucia-sveltekit/client';
 	const session = getSession();
-	
+	import '../app.css';
+	import { page } from '$app/stores';
+
 	handleSilentRefresh();
 	// import type { LayoutData } from './$types';
-	
+
 	// export let data: LayoutData;
+	const linkStyle = 'hover:border-b-4 border-rose-950 hover:bg-rose-200 border px-4';
+
+	let links = [
+		['', 'Etusivu'],
+		['yhteydenotto', 'Ota yhteyttä'],
+		['tuote', 'Tuotteet']
+	];
+	if ($session) {
+		links.push(['profile', 'Oma sivu']);
+	} else {
+		links.push(['login', 'Kirjaudu']);
+	}
 </script>
 
-<header>
-	<nav>
-		<a href="/">Etusivu</a>
-		<a href="/yhteydenotto">Ota yhteyttä</a>
-		{#if $session}
-		<a href="/profile">{$session?.user.username}</a>
-		{:else}
-		<a href="/login">Kirjaudu sisään</a>
-		{/if}
+<div class="h-full w-full fixed -z-10 dark:bg-rose-950" />
+<h1 class="text-4xl pb-1 font-serif text-center logoteksti text-rose-950 dark:text-gray-200">
+	Kirjontastudio Helmi
+</h1>
 
-	</nav>
-</header>
-<main>
+<nav class="w-full flex justify-between px-4 py-8 mx-auto bg-white sticky top-0">
+	<div>
+		<h3
+			class="border border-rose-950 rounded-full p-2 tracking-tighter italic font-medium text-rose-950 logoteksti"
+		>
+			Helmi
+		</h3>
+	</div>
+	<input id="laatikko" type="checkbox" class="peer" hidden />
+	<div class="hidden sm:flex sm:flex-row flex-col peer-checked:flex">
+		<span />
+		{#each links as [route, desc]}
+			<a href="/{route}" class="{linkStyle} {$page.routeId === route ? 'bg-rose-200' : ''}"
+				>{desc}</a
+			>
+		{/each}
+
+		<label for="laatikko">
+			<span class="z-10 absolute top-10 right-10 sm:hidden"
+				><svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+					><rect x="0" fill="white" width="24" height="24" /><g
+						><path
+							d="M18.36 19.78L12 13.41l-6.36 6.37-1.42-1.42L10.59 12 4.22 5.64l1.42-1.42L12 10.59l6.36-6.36 1.41 1.41L13.41 12l6.36 6.36z"
+						/></g
+					></svg
+				></span
+			>
+		</label>
+	</div>
+	<label for="laatikko">
+		<span class="flex sm:hidden absolute top-10 right-10">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="w-6 h-6"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M4 6h16M4 12h16M4 18h16"
+				/>
+			</svg>
+		</span></label
+	>
+</nav>
+<main class="text-rose-950 dark:bg-rose-950 dark:text-gray-200 px-4 sm:px-8">
 	<slot />
 </main>
-<footer>&copy; 2022 Ilkka Forsblom</footer>
+<footer class="fixed bottom-0 w-full border-4 border-double text-center footerteksti bg-white">
+	&copy; 2022 Ilkka Forsblom
+</footer>
 
 <style>
+	/* printtivärit */
 	@import url('https://fonts.googleapis.com/css2?family=Lora&family=Satisfy&family=Raleway&display=swap');
-	:global(h1) {
+	.logoteksti {
 		font-family: 'Satisfy', cursive;
 	}
-	:global(p) {
+	main {
 		font-family: 'Lora', serif;
 	}
-	footer {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		border: 4px;
-		border-style: outset;
-		min-width: 100vw;
-		text-align: center;
+	.footerteksti {
 		font-family: 'Raleway', sans-serif;
 	}
-	nav {
-		font-family: 'Raleway', sans-serif;
-		overflow: hidden;
-		background-color: darkolivegreen;
-		/* Set the navbar to fixed position */
-		position: fixed;
 
-		top: 0;
-		left: 0;
-		width: 100%;
+	@media print {
+		nav {
+			display: none;
+		}
+		footer {
+			position: relative;
+		}
+		* {
+			color: black;
+			background-color: white;
+		}
 	}
-
-	/* Links inside the navbar */
-	nav a {
-		float: left;
-		display: block;
-		color: var(--vaaleaneutraali);
-		text-align: center;
-		padding: 14px 16px;
-		text-decoration: none;
-	}
-
-	/* Change background on mouse-over */
-	nav a:hover {
-		background: #ddd;
-		color: black;
-	}
-	main {
-		margin-top: 50px;
-	}
-
-	:global(form) {
-    display: flex;
-    flex-direction: column;
-}
-
-:global(input:invalid+span::after,
-textarea:invalid+span::after) {
-    content: '❗';
-    color: red;
-    padding-left: 5px;
-}
-
-:global(input:valid+span::after) {
-    color: green;
-    content: '✓';
-    padding-left: 5px;
-}
-
-:global(.req) {
-    display: grid;
-    grid-template-columns: 90% 10%;
-}
-
-:global(textarea) {
-    height: 10em;
-}
 
 	/* fontit logolle: Satisfy ja Courgette */
 </style>

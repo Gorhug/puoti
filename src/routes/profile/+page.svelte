@@ -33,7 +33,7 @@
 				cloudName:  PUBLIC_CLOUD_NAME ,
 				uploadSignature:  generateSignature,
 				cropping: true,
-				sources: ["local", "unsplash"],
+				sources: ["unsplash"],
 				multiple: false,
 				folder: "avatar",
 				croppingAspectRatio: 1.0,
@@ -59,9 +59,10 @@
 <div>
 	<img src="{$page.data.avatar_url}" alt="avatar">
 </div>
+{#if browser}
 <div>
 	<button id="upload_widget" class="cloudinary-button" on:click={cloud_widget.open}>Vaihda avatarkuva</button>
 
 </div>
-
+{/if}
 <button on:click={() => signOut('/')}>Sign out</button>
