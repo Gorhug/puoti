@@ -4,9 +4,9 @@
 	// export let data: PageData;
 
 	import { applyAction, enhance } from '$app/forms';
-
+	import {inputStyle} from '$lib/tyylit'
 	export let form: { message?: string };
-	const inputStyle = 'border border-slate-900 text-black';
+	
 </script>
 
 <h2 class="text-xl">Luo käyttäjätili:</h2>
@@ -60,7 +60,7 @@
 		/>
 		<span class="peer-invalid:after:content-['❗'] peer-valid:after:content-['✅']" /><br />
 		<p class="w-fit bg-red-500 peer-invalid:block hidden">
-			vähintään 8 merkkiä (ei merkkirajoituksia)
+			vähintään 8 merkkiä (kaikki merkit sallittu)
 		</p>
 	</div>
 	<input type="submit" value="Luo tili" class="button p-2 my-4 dark:bg-white {inputStyle}" />

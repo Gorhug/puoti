@@ -1,53 +1,49 @@
+<script lang="ts">
+	const inputStyle = "border border-slate-900 text-black dark:bg-rose-700 dark:text-gray-100"
+</script>
+
 <svelte:head>
     <title>Ota yhteyttä - Kirjontastudio Helmi</title>
 </svelte:head>
 
-<form method="post">
+<form class="space-y-4 mt-8 flex flex-col px-8 w-96" method="post">
+	<div>
 	<label for="nimi">Nimi:</label>
-	<input type="text" id="nimi" name="nimi" />
-	<label for="email">Sähköpostiosoite:</label>
-	<div class="req"><input type="email" id="email" name="email" required /><span /></div>
+	<input class="w-96 {inputStyle}" type="text" id="nimi" name="nimi" /></div>
+	<div><label for="email">Sähköpostiosoite:</label>
+	<input class="w-72 peer {inputStyle}" type="email" id="email" name="email" required />
+		<span class="peer-invalid:after:content-['❗'] peer-valid:after:content-['✅']"/>
+		<p class="w-fit bg-red-600 peer-invalid:block hidden"
+			>Kirjoita sähköpostiosoite (esim: matti@example.com)</p
+		></div>
+	<div>
 	<label for="aihe">Aihe:</label>
-	<div class="req"><input list="aiheet" id="aihe" name="aihe" required /><span /></div>
+	<input class="{inputStyle} w-72 peer outline-black" list="aiheet" id="aihe" name="aihe" required />
+	<span class="peer-invalid:after:content-['❗'] peer-valid:after:content-['✅']"/>
+	<p class="w-fit bg-red-600 peer-invalid:block hidden"
+	>Kirjoita viestisi aihe</p
+>
 	<datalist id="aiheet">
 		<option value="Kysymys tuotteista" /><option value="Tilaus" /><option
 			value="Yhteydenottopyyntö"
-		/></datalist
-	>
+		/><option value="Ehdotus sivustoa koskien"></option></datalist
+	></div>
+
+	<div>
 	<label for="viesti">Viesti:</label>
-  <div class="req">
-	<textarea id="viesti" name="viesti" required /><span /></div>
+
+	<textarea class="{inputStyle} w-72 h-24 peer" id="viesti" name="viesti" required />
+	<span class="peer-invalid:after:content-['❗'] peer-valid:after:content-['✅']"/>
+	<p class="w-fit bg-red-600 peer-invalid:block hidden"
+			>Kirjoita viesti</p
+		></div>
 
 	<div id="tilausnappi">
 		<input type="checkbox" id="uutiskirje" name="uutiskirje" />
 		<label for="uutiskirje" id="uutiskirjeteksti"
-			>Haluan tilata Puutarhaliike Neilikan uutiskirjeen</label
+			>Haluan tilata uutiskirjeen</label
 		>
 	</div>
-	<input type="submit" id="submit" value="Lähetä" />
+	<input class="button p-2 my-4 dark:bg-white {inputStyle}" type="submit" id="submit" value="Lähetä" />
 </form>
 
-<style>
-	form {
-		display: flex;
-		flex-direction: column;
-	}
-	input:invalid + span::after, textarea:invalid + span::after {
-		content: '❗';
-		color: red;
-		padding-left: 5px;
-	}
-
-	input:valid + span::after {
-		color: green;
-		content: '✓';
-		padding-left: 5px;
-	}
-  .req {
-    display: grid;
-    grid-template-columns: 90% 10%;
-  }
-  textarea {
-    height: 10em;
-  }
-</style>

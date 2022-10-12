@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
-
+	import {inputStyle} from '$lib/tyylit'
+	
 	export let form: { message?: string };
-	const inputStyle = "border border-slate-900 text-black"
+
 </script>
 
 <div>
