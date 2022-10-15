@@ -4,6 +4,8 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
+	import { inputStyle } from '$lib/tyylit'
+
 	const session = getSession();
 	
 	import { PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
@@ -51,7 +53,7 @@
 	<script src="https://upload-widget.cloudinary.com/global/all.js" on:load={createWidget}></script>
 {/if}
 
-<h2>Profile</h2>
+<h2 class="text-lg mb-8">Profile</h2>
 
 <div>
 	<p>Username: {$session?.user.username}</p>
@@ -65,4 +67,4 @@
 
 </div>
 {/if}
-<button on:click={() => signOut('/')}>Sign out</button>
+<button class="p-2 mt-8 {inputStyle}" on:click={() => signOut('/')}>Kirjaudu ulos</button>

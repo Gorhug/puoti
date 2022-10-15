@@ -40,15 +40,27 @@ ___
 | keskimmäinen       | keskitetty       |  0,80€ |
 
     `;
-    
-    async function vieritaEsikatselu(e: Event) {
-        await tick()
-        const esikatselu = document.getElementById('esikatselu')
-        esikatselu?.scrollTo({top: e.target.scrollTop})
-    }
+	let esikatselu : HTMLElement;
+	let editori: HTMLElement;
+
+	async function vieritaEsikatselu(e: Event) {
+		await tick();
+		//const esikatselu = document.getElementById('esikatselu');
+		esikatselu?.scrollTo({ top: editori.scrollTop });
+	}
+
+	async function vieritaEditori(e: Event) {
+		await tick()
+		editori.scrollTo({ top: esikatselu.scrollTop})
+	}
+
 	let markdown = form?.tuote?.kuvaus ?? oletusKuvaus;
 	export const session = getSession();
 </script>
+
+<svelte:head>
+	<title>Tuotteet - Kirjontastudio Helmi</title>
+</svelte:head>
 
 <h2 class="text-2xl text-center pb-5">Tuotteet</h2>
 
@@ -79,23 +91,31 @@ ___
 			/> &euro;</span
 		>
 
-		
 		<div class="flex flex-col md:flex-row">
-            <div class="w-full">
-            <label for="kuvaus">Kuvaus:</label>
-			<textarea
-				class="{inputStyle} w-full h-48 overflow-scroll"
-				id="kuvaus"
-				name="kuvaus"
-				bind:value={markdown}
-                on:scroll={vieritaEsikatselu}
-			/></div>
-            <div class="w-full">
-                <span>Esikatselu:</span>
-			<div id="esikatselu" class="markdown w-full h-48 space-y-3 overflow-scroll border border-dashed border-black">{@html md.render(markdown)}</div>
-            </div>
+			<div class="w-full">
+				<label for="kuvaus">Kuvaus:</label>
+				<textarea
+					class="{inputStyle} w-full h-48 overflow-scroll"
+					id="kuvaus"
+					name="kuvaus"
+					bind:value={markdown}
+					bind:this={editori}
+					on:scroll={vieritaEsikatselu}
+				/>
+			</div>
+			<div class="w-full">
+				<span>Esikatselu:</span>
+				<div
+					bind:this={esikatselu}
+					on:scroll={vieritaEditori}
+					id="esikatselu"
+					class="markdown w-full h-48 space-y-3 overflow-scroll border border-dashed border-black"
+				>
+					{@html md.render(markdown)}
+				</div>
+			</div>
 		</div>
-		<input type="submit" name="submit" value="Lisää tuote" class="button p-2 my-4 {inputStyle}" />
+		<input type="submit" name="submit" value="Lisää tuote" class="p-2 my-4 {inputStyle}" />
 	</form>
 {/if}
 
@@ -117,35 +137,35 @@ ___
 		{/each}
 	</tbody>
 </table>
+
 <style>
-    :global(.markdown h1) {
-        font-size: xx-large;
-    }
-    :global(.markdown h2) {
-        font-size: x-large;
-    }
-    :global(.markdown h3) {
-        font-size: larger;
-    }
-    :global(.markdown h4) {
-        font-size: large;
-    }
-    :global(.markdown h5) {
-        font-size:medium;
-    }
-    :global(.markdown ul) {
-        list-style: disc;
-        margin-left: 20px;
-        padding-left: 20px;
-    }
-    :global(.markdown ol) {
-        list-style-type:upper-roman;
-        margin: 20px;
-        padding: 20px;
-    }
+	:global(.markdown h1) {
+		font-size: xx-large;
+	}
+	:global(.markdown h2) {
+		font-size: x-large;
+	}
+	:global(.markdown h3) {
+		font-size: larger;
+	}
+	:global(.markdown h4) {
+		font-size: large;
+	}
+	:global(.markdown h5) {
+		font-size: medium;
+	}
+	:global(.markdown ul) {
+		list-style: disc;
+		margin-left: 20px;
+		padding-left: 20px;
+	}
+	:global(.markdown ol) {
+		list-style-type: upper-roman;
+		margin: 20px;
+		padding: 20px;
+	}
 
-    :global(.markdown td) {
-        border: thin solid black;
-    }
-
+	:global(.markdown td) {
+		border: thin solid black;
+	}
 </style>

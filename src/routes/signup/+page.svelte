@@ -8,6 +8,9 @@
 	export let form: { message?: string };
 	
 </script>
+<svelte:head>
+    <title>Luo tili - Kirjontastudio Helmi</title>
+</svelte:head>
 
 <h2 class="text-xl">Luo käyttäjätili:</h2>
 <form
@@ -63,7 +66,7 @@
 			vähintään 8 merkkiä (kaikki merkit sallittu)
 		</p>
 	</div>
-	<input type="submit" value="Luo tili" class="button p-2 my-4 dark:bg-white {inputStyle}" />
+	<input type="submit" value="Luo tili" class="p-2 my-4 {inputStyle}" />
 </form>
 <p class="error">{form?.message || ''}</p>
 <p class="mt-8">

@@ -1,11 +1,8 @@
-<script>
-    
-    	const html = "<h1>Kokeilu</h1>"
-</script>
+<svelte:head>
+    <title>Kirjontastudio Helmi</title>
+</svelte:head>
 <div class="space-y-4">
-    <div id="md">
-    {@html html}</div>
-    <h1>jfla</h1>
+ 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam varius
     commodo facilisis. Donec ac elit vitae dui luctus fermentum. Cras non
     augue id massa placerat tempus a at leo. Aliquam rutrum sem massa.
@@ -104,8 +101,3 @@
         vehicula consectetur. Donec eros elit, suscipit non tristique ac,
         imperdiet eu dolor. Vivamus sollicitudin luctus sollicitudin.</p>
 </div>
-<style>
-    :global(#md h1) {
-        color: blue;
-    }
-</style>

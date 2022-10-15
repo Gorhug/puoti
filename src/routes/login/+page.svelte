@@ -6,6 +6,10 @@
 
 </script>
 
+<svelte:head>
+    <title>Kirjaudu sisään - Kirjontastudio Helmi</title>
+</svelte:head>
+
 <div>
 	<h1 class="text-xl py-4">Kirjaudu sisään:</h1>
 	<form
@@ -32,7 +36,7 @@
 		<input class="{inputStyle}" id="username" name="username" /><br />
 		<label for="password">Salasana:</label><br />
 		<input class="{inputStyle}" type="password" id="password" name="password" /><br />
-		<input class="{inputStyle} button p-2 mt-4 dark:bg-white" type="submit" value="Kirjaudu" />
+		<input class="{inputStyle} p-2 mt-4" type="submit" value="Kirjaudu" />
 	</form>
 	<p class="error">{form?.message || ''}</p>
 	<p class="mt-8">
