@@ -19,8 +19,11 @@ function tuoteMapper(t: Tuote) {
     }
 }
 
+
+
 export const load: PageServerLoad = async () => {
     const tuotteet = await prisma_client.tuote.findMany()
+  
     return {
           tuotteet: tuotteet.map(tuoteMapper)
     };
