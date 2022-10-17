@@ -62,8 +62,10 @@ export const actions: Actions = {
 
         const tuote = await prisma_client.tuote.findUnique({ 
             where: {  tuote_id: tuote_id },
+            include: { kategoriat: true }
          })
-
+        const tuotteenKategoriat = new Set(tuote?.kategoriat.map(valitutMapper) ?? [])
+        
         if (tuote?.luoja_id != user_id) {
             return invalid(401, {error: 'Vain tuotteen luoja voi päivittää tuotteen'})
         }
@@ -72,24 +74,29 @@ export const actions: Actions = {
         const valitut = JSON.parse(form.get('kategoriat')?.toString()??'')
         let kategoriat : {kategoria_id: string}[] = []
         let luotavat : {kategoria_id: string, nimi: string}[] = []
+        let poistettavat: {kategoria_id: string}[] = []
         for (let k of valitut) {
             if (k.$created) {
                 luotavat.push({nimi: k.kategoria_id, kategoria_id: slug(k.kategoria_id)})
                 continue
             }
             kategoriat.push({kategoria_id: k.kategoria_id})
+            tuotteenKategoriat.delete(k.kategoria_id)
         }
-
+        for (const d of tuotteenKategoriat) {
+            poistettavat.push({kategoria_id: d})
+        }
         try {
             const res = await prisma_client.tuote.update({
                     where: {
                         tuote_id: tuote_id
                     },
-                    include: { kategoriat: true },
+                    // include: { kategoriat: true },
                     data: {
                         kategoriat: {
                             connect: kategoriat,
-                            create: luotavat
+                            create: luotavat,
+                            delete: poistettavat
                         }
                     }
                 }
