@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { PageData, ActionData } from './$types';
 	import { getSession } from 'lucia-sveltekit/client';
 	import { browser } from '$app/environment';
 	import Svelecte from 'svelecte';
-
+	import { inputStyle } from '$lib/tyylit'
 	const session = getSession();
-	
+	export let form: ActionData
 	export let data: PageData;
 
 
@@ -92,6 +92,12 @@
 	{/if}
 </ul>
 {#if data.luoja == $session?.user.username}
+{#if form?.error}
+<p>Virhe: {form?.error}</p>
+{/if}
+{#if form?.success}
+<p>Kategorioiden päivitys onnistui</p>
+{/if}
 	<div class="dark:bg-gray-200 dark:text-rose-950">
 		<Svelecte
 			options={data.kategoriat}
@@ -105,6 +111,11 @@
 			bind:value={valitut}
 		/>
 	</div>
+	<form method="post">
+		<input type="hidden" name="_lucia" value={$session?.access_token} />
+		<input type="hidden" name="kategoriat" value="{JSON.stringify(valinnat)}"/>
+		<input type="submit" name="submit" value="Lisää tuotekategoriat" class="p-2 my-4 {inputStyle}" />
+	</form>
 	<p>{JSON.stringify(valinnat)}</p>
 	{#if browser}
 		<script
