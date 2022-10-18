@@ -5,6 +5,7 @@ import slug from 'slug'
 import { npm_config_init_module } from '$env/static/private';
 import type { Tuote } from '@prisma/client';
 import { Prisma } from '@prisma/client'
+import { processForm } from '$lib/lomake'
 
 const required = new Set(['nimi', 'hinta', 'hinta'])
 const optional = ['kuvaus']
@@ -29,21 +30,7 @@ export const load: PageServerLoad = async () => {
     };
 };
 
-function processForm(data: FormData) {
-    let missing = required
-    let entries: Map<string, string> = new Map()
-    for (let [name, value] of data) {
-        if (expected.has(name)) {
-            value = value.toString().trim()
-            if (value.length) {
-                entries.set(name, value)
-                missing.delete(name)
-            }
-        }
 
-    }
-    return { entries, missing }
-}
 
 
 export const actions: Actions = {
@@ -58,7 +45,7 @@ export const actions: Actions = {
             return invalid(401, { error: 'Authentication required', nimi: '', kuvaus: '' })
         }
 
-        const form = processForm(await request.formData())
+        const form = processForm(await request.formData(), required, expected)
         const data = form.entries
         const missing = form.missing
 

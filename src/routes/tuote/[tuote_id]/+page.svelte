@@ -74,6 +74,10 @@
 	}
 </script>
 
+<svelte:head>
+    <title>{data.tuote_nimi} - Kirjontastudio Helmi</title>
+</svelte:head>
+
 <h2>{data.tuote_nimi}</h2>
 <ul>
 	<li>Luoja: <a href="/profile/{data.luoja}">{data.luoja}</a></li>
