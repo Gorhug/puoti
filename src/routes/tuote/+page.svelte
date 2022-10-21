@@ -83,7 +83,9 @@ ___
 			<hr>
 		{/if}
 		{#if form?.success}
-			<p>Tuotteen lisäys onnistui</p>
+			<p>Tuotteen lisäys onnistui: <a class="hover:underline font-sans tracking-tighter italic" href="/tuote/{form?.tuote_id}"
+				>{form?.nimi}</a
+			></p>
 		{/if}
 		<input type="hidden" name="_lucia" value={$session?.access_token} />
 
@@ -105,7 +107,7 @@ ___
 
 		<div class="flex flex-col md:flex-row">
 			<div class="w-full">
-				<label for="kuvaus">Kuvaus:</label><button class="ml-4 px-4 {inputStyle}" on:click={() => { markdown=''}}>Tyhjennä kuvaus</button>
+				<label for="kuvaus">Kuvaus:</label><button type="button" class="ml-4 px-4 {inputStyle}" on:click={() => { markdown=''}}>Tyhjennä kuvaus</button>
 				<textarea
 					class="{inputStyle} w-full h-48 overflow-scroll"
 					id="kuvaus"

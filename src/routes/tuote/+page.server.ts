@@ -7,9 +7,7 @@ import type { Tuote } from '@prisma/client';
 import { Prisma } from '@prisma/client'
 import { processForm } from '$lib/lomake'
 
-const required = ['nimi', 'hinta']
-const optional = ['kuvaus']
-const expected = [...required, ...optional]
+
 
 function tuoteMapper(t: Tuote) {
     return {
@@ -24,9 +22,9 @@ function tuoteMapper(t: Tuote) {
 
 export const load: PageServerLoad = async () => {
     const tuotteet = await prisma_client.tuote.findMany()
-  
+
     return {
-          tuotteet: tuotteet.map(tuoteMapper)
+        tuotteet: tuotteet.map(tuoteMapper)
     };
 };
 
@@ -35,6 +33,10 @@ export const load: PageServerLoad = async () => {
 
 export const actions: Actions = {
     default: async ({ cookies, request }) => {
+        const required = ['nimi', 'hinta']
+        const optional = ['kuvaus']
+        const expected = [...required, ...optional]
+
         let user_id = ''
         let errors: Array<string> = []
         try {
@@ -54,20 +56,20 @@ export const actions: Actions = {
         let hinta = data.get('hinta') ?? ''
         try {
             hinta = new Prisma.Decimal(hinta).toFixed(2)
-        } catch (e)  {
+        } catch (e) {
             errors.push('Hinnan pitää olla numero')
-        } 
+        }
         const nimi = data.get('nimi') ?? ''
-
+        const tuote_id = slug(nimi)
         const tuote = {
             nimi: nimi,
             hinta: hinta,
             kuvaus: data.get('kuvaus') ?? '',
             luoja_id: user_id,
-            tuote_id: slug(nimi)
+            tuote_id: tuote_id
         }
 
-        if (missing.size  || errors.length ) {
+        if (missing.size || errors.length) {
             return invalid(400, { error: 'Tuotetietoja puuttuu tai virheellisiä', data, missing, errors })
         }
 
@@ -75,7 +77,7 @@ export const actions: Actions = {
             const res = await prisma_client.tuote.create({
                 data: tuote
             })
-            return { success: true }
+            return { success: true, tuote_id, nimi }
         } catch (e) {
             console.log(e)
             return invalid(500, { error: 'Tuotteen luonti epäonnistui', data, missing, errors })

@@ -32,7 +32,7 @@
     <tbody>
         {#each data.kategoriat as k}
             <tr>
-                <td>{k.nimi}</td><td>{k.kuvaus}</td>
+                <td>{k.nimi}</td><td>{k.kuvaus ?? ''}</td>
             </tr>
         {/each}
     </tbody>
