@@ -8,6 +8,9 @@
 	var md = new Remarkable();
 	export let form: ActionData;
 	export let data: PageData;
+	import { dev } from '$app/environment';
+	import { get } from 'svelte/store';
+
 	const oletusKuvaus = `
 # Lyhyt Markdown ohje
 ## Perusmuotoilut
@@ -40,7 +43,7 @@ ___
 | keskimmäinen       | keskitetty       |  0,80€ |
 
     `;
-	let esikatselu : HTMLElement;
+	let esikatselu: HTMLElement;
 	let editori: HTMLElement;
 
 	async function vieritaEsikatselu(e: Event) {
@@ -50,11 +53,11 @@ ___
 	}
 
 	async function vieritaEditori(e: Event) {
-		await tick()
-		editori.scrollTo({ top: esikatselu.scrollTop})
+		await tick();
+		editori.scrollTo({ top: esikatselu.scrollTop });
 	}
 
-	let markdown = form?.tuote?.kuvaus ?? oletusKuvaus;
+	let markdown = form?.data?.get('kuvaus') ?? oletusKuvaus;
 	export const session = getSession();
 </script>
 
@@ -68,15 +71,26 @@ ___
 	<h3 class="text-xl pb-3">Lisää tuote:</h3>
 	<form method="post" class="flex flex-col px-8">
 		{#if form?.error}
+		<hr>
 			<p>Virhe: {form?.error}</p>
+			{#each form?.errors as e}
+				<p>{e}</p>
+			{/each}
+			Puuttuu:
+			{#each [...form.missing?.values()] as m}
+				&nbsp;{m}&nbsp;
+			{/each}
+			<hr>
 		{/if}
 		{#if form?.success}
-			<p>Tuotteen lisäys onnistui</p>
+			<p>Tuotteen lisäys onnistui: <a class="hover:underline font-sans tracking-tighter italic" href="/tuote/{form?.tuote_id}"
+				>{form?.nimi}</a
+			></p>
 		{/if}
 		<input type="hidden" name="_lucia" value={$session?.access_token} />
 
 		<label for="nimi">Tuotteen nimi:</label>
-		<input class={inputStyle} id="nimi" name="nimi" required value={form?.tuote?.nimi ?? ''} />
+		<input class={inputStyle} id="nimi" name="nimi" required value={form?.data?.get('nimi') ?? ''} />
 
 		<label for="hinta">Tuotteen hinta:</label>
 		<span
@@ -87,13 +101,13 @@ ___
 				type="number"
 				step="0.01"
 				required
-				value={form?.tuote?.hinta ?? '9.99'}
+				value={form?.data?.get('hinta') ?? '9.99'}
 			/> &euro;</span
 		>
 
 		<div class="flex flex-col md:flex-row">
 			<div class="w-full">
-				<label for="kuvaus">Kuvaus:</label>
+				<label for="kuvaus">Kuvaus:</label><button type="button" class="ml-4 px-4 {inputStyle}" on:click={() => { markdown=''}}>Tyhjennä kuvaus</button>
 				<textarea
 					class="{inputStyle} w-full h-48 overflow-scroll"
 					id="kuvaus"
@@ -116,6 +130,15 @@ ___
 			</div>
 		</div>
 		<input type="submit" name="submit" value="Lisää tuote" class="p-2 my-4 {inputStyle}" />
+		{#if dev}
+		<input
+			formnovalidate
+			class="p-2 my-4 {inputStyle}"
+			type="submit"
+			id="submit"
+			value="Lähetä ilman selainvalidointia"
+		/>
+	{/if}
 	</form>
 {/if}
 
@@ -132,7 +155,7 @@ ___
 					><a class="hover:underline font-sans tracking-tighter italic" href="/tuote/{t.tuote_id}"
 						>{t.nimi}</a
 					></td
-				><td>{t.kuvaus ?? ''}</td><td>{t.hinta}</td>
+				><td>{@html md.render(t.kuvaus ?? '')}</td><td>{t.hinta}</td>
 			</tr>
 		{/each}
 	</tbody>

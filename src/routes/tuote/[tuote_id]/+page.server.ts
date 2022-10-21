@@ -96,7 +96,7 @@ export const actions: Actions = {
                         kategoriat: {
                             connect: kategoriat,
                             create: luotavat,
-                            delete: poistettavat
+                            disconnect: poistettavat
                         }
                     }
                 }

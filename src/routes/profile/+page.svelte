@@ -33,6 +33,7 @@
 		 cloud_widget = cloudinary.createUploadWidget( {
 				api_key:  PUBLIC_CLOUD_APIKEY ,
 				cloudName:  PUBLIC_CLOUD_NAME ,
+				uploadPreset: 'avatar',
 				uploadSignature:  generateSignature,
 				cropping: true,
 				sources: ["unsplash"],

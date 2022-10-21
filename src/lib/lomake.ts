@@ -1,5 +1,6 @@
-export function processForm(data: FormData, required: Set<string>, expected: Set<string>) {
-    let missing = required
+export function processForm(data: FormData, required: string[], expectArr: string[]) {
+    let missing = new Set(required)
+    const expected = new Set(expectArr)
     let entries: Map<string, string> = new Map()
     for (let [name, value] of data) {
         if (expected.has(name)) {

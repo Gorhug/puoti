@@ -13,7 +13,8 @@
 	let links = [
 		['', 'Etusivu'],
 		['yhteydenotto', 'Ota yhteyttä'],
-		['tuote', 'Tuotteet']
+		['tuote', 'Tuotteet'],
+		// ['kategoria', 'Tuotekategoriat']
 	];
 	if ($session) {
 		links.push(['profile', 'Oma sivu']);
@@ -76,7 +77,7 @@
 		</span></label
 	>
 </nav>
-<main class="text-rose-950 dark:bg-rose-950 dark:text-gray-200 px-4 sm:px-8">
+<main class="text-rose-950 dark:bg-rose-950 dark:text-gray-200 px-4 sm:px-8 mb-24">
 	<slot />
 </main>
 <footer class="fixed bottom-0 w-full border-4 border-double text-center footerteksti bg-white dark:bg-rose-950 dark:text-gray-200">

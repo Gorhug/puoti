@@ -120,7 +120,7 @@
 		<input type="hidden" name="kategoriat" value="{JSON.stringify(valinnat)}"/>
 		<input type="submit" name="submit" value="Lisää tuotekategoriat" class="p-2 my-4 {inputStyle}" />
 	</form>
-	<p>{JSON.stringify(valinnat)}</p>
+
 	{#if browser}
 		<script
 			src="https://upload-widget.cloudinary.com/global/all.js"
