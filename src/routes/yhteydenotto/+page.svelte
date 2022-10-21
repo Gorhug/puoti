@@ -2,6 +2,8 @@
 	import { inputStyle } from '$lib/tyylit';
 	import type { ActionData } from './$types'
 	export let form: ActionData
+
+	let markdown = form?.data?.get('viesti') ?? '';
 </script>
 
 <svelte:head>
@@ -15,7 +17,7 @@
 		{#each form.errors as e}
 			<p>{e}</p>
 		{/each}
-		Missing: 
+		Puuttuu: 
 		{#each form.missArray as m}
 			&nbsp;{m}&nbsp;
 		{/each}
@@ -25,7 +27,7 @@
 	{/if}
 	<div>
 		<label for="nimi">Nimi:</label>
-		<input class="w-96 {inputStyle}" type="text" id="nimi" name="nimi" maxlength="128" />
+		<input class="w-96 {inputStyle}" type="text" id="nimi" name="nimi" maxlength="128" value={form?.data?.get('nimi')??''}/>
 	</div>
 	<div>
 		<label for="email">Sähköpostiosoite:</label>
@@ -35,6 +37,7 @@
 			id="email"
 			name="email"
 			maxlength="320"
+			value={form?.data?.get('email')??''}
 			required
 		/>
 		<span class="peer-invalid:after:content-['❗'] peer-valid:after:content-['✅']" />
@@ -50,6 +53,7 @@
 			list="aiheet"
 			id="aihe"
 			name="aihe"
+			value={form?.data?.get('aihe')??''}
 			required
 		/>
 		<span class="peer-invalid:after:content-['❗'] peer-valid:after:content-['✅']" />
@@ -68,6 +72,7 @@
 			class="{inputStyle} w-72 h-24 peer"
 			id="viesti"
 			name="viesti"
+			bind:value={markdown}
 			required
 			maxlength="2048"
 		/>
