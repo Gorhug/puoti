@@ -7,13 +7,16 @@ import { invalid } from '@sveltejs/kit';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
-const required = new Set(['email', 'aihe', 'viesti'])
-const optional = ['nimi', 'uutiskirje']
-const expected = new Set([...required, ...optional])
+
 const helmiEmail = 'quiverth@gmail.com'
 
 export const actions: Actions = {
   default: async ({ request }) => {
+    const required = ['email', 'aihe', 'viesti']
+    const optional = ['nimi', 'uutiskirje']
+    const expected = [...required, ...optional]
+
+
     const form = processForm(await request.formData(), required, expected)
     const data = form.entries
     const missing = form.missing
@@ -21,13 +24,12 @@ export const actions: Actions = {
     const email = data.get('email') ?? ''
 
     if (email && !emailRegex.test(email)) {
-      errors.push(`Virheellinen email-osoite ${email}`)
+      errors.push(`Virheellinen email-osoite`)
     }
- 
 
     if (missing.size || errors.length) {
-      const missArray = [...missing.values()]
-      return invalid(400, { error: 'Puuttuvia tai virheellisiä tietoja', missArray, errors, data })
+  
+      return invalid(400, { error: 'Puuttuvia tai virheellisiä tietoja', missing, errors, data })
     }
 
     
@@ -40,7 +42,10 @@ export const actions: Actions = {
       subject: data.get('aihe') ?? 'Virhetilanne???', // Subject line
       text: viesti, // plain text body
       html: md.render(viesti), // html body
-      replyTo: `${nimi} <${email}>`
+      replyTo: {
+        name: nimi,
+        address: email
+      }
     });
     
     return { success: true }

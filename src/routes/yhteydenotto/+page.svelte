@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { inputStyle } from '$lib/tyylit';
-	import type { ActionData } from './$types'
-	export let form: ActionData
+	import type { ActionData } from './$types';
+	import { dev } from '$app/environment';
+	export let form: ActionData;
 
 	let markdown = form?.data?.get('viesti') ?? '';
 </script>
@@ -13,21 +14,27 @@
 <form class="space-y-4 mt-8 flex flex-col px-8 w-96" method="post">
 	{#if form?.error}
 		<p>Virhe: {form?.error}</p>
-		<p>{JSON.stringify(form.data)}</p>
 		{#each form.errors as e}
 			<p>{e}</p>
 		{/each}
-		Puuttuu: 
-		{#each form.missArray as m}
+		Puuttuu:
+		{#each [...form.missing.values()] as m}
 			&nbsp;{m}&nbsp;
 		{/each}
 	{/if}
 	{#if form?.success}
-		<p>Tuotteen lisäys onnistui</p>
+		<p>Viestin lähetys onnistui</p>
 	{/if}
 	<div>
 		<label for="nimi">Nimi:</label>
-		<input class="w-96 {inputStyle}" type="text" id="nimi" name="nimi" maxlength="128" value={form?.data?.get('nimi')??''}/>
+		<input
+			class="w-96 {inputStyle}"
+			type="text"
+			id="nimi"
+			name="nimi"
+			maxlength="128"
+			value={form?.data?.get('nimi') ?? ''}
+		/>
 	</div>
 	<div>
 		<label for="email">Sähköpostiosoite:</label>
@@ -37,7 +44,7 @@
 			id="email"
 			name="email"
 			maxlength="320"
-			value={form?.data?.get('email')??''}
+			value={form?.data?.get('email') ?? ''}
 			required
 		/>
 		<span class="peer-invalid:after:content-['❗'] peer-valid:after:content-['✅']" />
@@ -53,7 +60,7 @@
 			list="aiheet"
 			id="aihe"
 			name="aihe"
-			value={form?.data?.get('aihe')??''}
+			value={form?.data?.get('aihe') ?? ''}
 			required
 		/>
 		<span class="peer-invalid:after:content-['❗'] peer-valid:after:content-['✅']" />
@@ -85,4 +92,13 @@
 		<label for="uutiskirje" id="uutiskirjeteksti">Haluan tilata uutiskirjeen</label>
 	</div>
 	<input class="p-2 my-4 {inputStyle}" type="submit" id="submit" value="Lähetä" />
+	{#if dev}
+		<input
+			formnovalidate
+			class="p-2 my-4 {inputStyle}"
+			type="submit"
+			id="submit"
+			value="Lähetä ilman selainvalidointia"
+		/>
+	{/if}
 </form>

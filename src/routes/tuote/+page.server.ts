@@ -7,9 +7,9 @@ import type { Tuote } from '@prisma/client';
 import { Prisma } from '@prisma/client'
 import { processForm } from '$lib/lomake'
 
-const required = new Set(['nimi', 'hinta', 'hinta'])
+const required = ['nimi', 'hinta']
 const optional = ['kuvaus']
-const expected = new Set([...required, ...optional])
+const expected = [...required, ...optional]
 
 function tuoteMapper(t: Tuote) {
     return {
@@ -68,8 +68,7 @@ export const actions: Actions = {
         }
 
         if (missing.size  || errors.length ) {
-            const missArray = [...missing.values()]
-            return invalid(400, { error: 'Tuotetietoja puuttuu tai virheellisiä', tuote, missArray, errors })
+            return invalid(400, { error: 'Tuotetietoja puuttuu tai virheellisiä', data, missing, errors })
         }
 
         try {
@@ -79,7 +78,7 @@ export const actions: Actions = {
             return { success: true }
         } catch (e) {
             console.log(e)
-            return invalid(500, { error: 'Tuotteen luonti epäonnistui', tuote, missing, errors })
+            return invalid(500, { error: 'Tuotteen luonti epäonnistui', data, missing, errors })
         }
 
 
