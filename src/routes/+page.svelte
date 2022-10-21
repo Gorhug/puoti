@@ -1,5 +1,8 @@
-
+<svelte:head>
+    <title>Kirjontastudio Helmi</title>
+</svelte:head>
 <div class="space-y-4">
+ 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam varius
     commodo facilisis. Donec ac elit vitae dui luctus fermentum. Cras non
     augue id massa placerat tempus a at leo. Aliquam rutrum sem massa.
