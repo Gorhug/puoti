@@ -1,3 +1,25 @@
+# Kirjontastudio Helmi
+
+Kirjontastudio Helmi -projekti Copyright 2022 Ilkka Forsblom
+
+## Pikaohje:
+
+Kopioi .env.example -> .env -tiedostoksi ja täytä tarvittavat kohdat.
+Asennukset:
+
+```bash
+npm install
+npx prisma db push
+```
+
+Dev-ympäristö käynnistys (avaa selaimen):
+
+```bash
+npm run dev -- --open
+```
+
+Sveltkit-projektin mukana tullut oletusohje:
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
