@@ -10,6 +10,7 @@
 	export let data: PageData;
 	import { dev } from '$app/environment';
 	import { get } from 'svelte/store';
+	import { PUBLIC_BRAND } from '$env/static/public';
 
 	const oletusKuvaus = `
 # Lyhyt Markdown ohje
@@ -62,7 +63,7 @@ ___
 </script>
 
 <svelte:head>
-	<title>Tuotteet - Kirjontastudio Helmi</title>
+	<title>Lisää tuote - {PUBLIC_BRAND}</title>
 </svelte:head>
 
 <h2 class="text-2xl text-center pb-5">Tuotteet</h2>

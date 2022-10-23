@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
+	import { PUBLIC_BRAND } from '$env/static/public';
 	import {inputStyle} from '$lib/tyylit'
 	
 	export let form: { message?: string };
@@ -7,7 +8,7 @@
 </script>
 
 <svelte:head>
-    <title>Kirjaudu sisään - Kirjontastudio Helmi</title>
+    <title>Kirjaudu sisään - {PUBLIC_BRAND}</title>
 </svelte:head>
 
 <div>

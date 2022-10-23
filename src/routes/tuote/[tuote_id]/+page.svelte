@@ -14,7 +14,7 @@
 	let valinnat: string[] = []
 	let valitut = data.valitut
 
-	import { PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
+	import { PUBLIC_BRAND, PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
 
 	let cloud_widget;
 	let gallery_widget;
@@ -77,7 +77,7 @@
 </script>
 
 <svelte:head>
-    <title>{data.tuote_nimi} - Kirjontastudio Helmi</title>
+    <title>{data.tuote_nimi} - {PUBLIC_BRAND}</title>
 </svelte:head>
 
 <h2 class="text-2xl my-4">{data.tuote_nimi}</h2>

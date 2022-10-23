@@ -8,3 +8,4 @@ node_modules
 !.env.example
 /prisma/sqlite
 muistio.html
+static/Corel Auto-Preserve/favicon.png

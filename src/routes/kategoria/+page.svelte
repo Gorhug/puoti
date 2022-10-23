@@ -3,10 +3,14 @@
     import type { PageData } from './$types';
     import type { ActionData } from './$types'
     import { linkStyle } from '$lib/tyylit';
+	import { PUBLIC_BRAND } from '$env/static/public';
     export let form : ActionData;
     export let data: PageData;
     export const session = getSession()
 </script>
+<svelte:head>
+	<title>Tuotekategoriat - {PUBLIC_BRAND}</title>
+</svelte:head>
 <h2 class="text-2xl mb-4">Tuotekategoriat</h2>
 
 <!-- {#if $session} -->

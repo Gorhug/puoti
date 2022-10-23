@@ -16,5 +16,5 @@ export const load: PageServerLoad = async ({params}) => {
     if (!kategoria) {
         throw error(404, 'Kategoriaa ei löydy')
     }
-    return { tuotteet: kategoria.tuotteet.map(tuoteMapper) };
+    return { kategoria: kategoria.nimi, tuotteet: kategoria.tuotteet.map(tuoteMapper) };
 };

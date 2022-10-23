@@ -3,7 +3,7 @@
 	const session = getSession();
 	import '../app.css';
 	import { page } from '$app/stores';
-
+	import {PUBLIC_BRAND} from '$env/static/public'
 	handleSilentRefresh();
 	// import type { LayoutData } from './$types';
 
@@ -24,7 +24,7 @@
 
 <div class="h-full w-full fixed -z-10 dark:bg-rose-950" />
 <h1 class="text-4xl pb-1 font-serif text-center logoteksti text-rose-950 dark:text-gray-200">
-	Kirjontastudio Helmi
+	{PUBLIC_BRAND}
 </h1>
 
 <nav class="w-full flex justify-between px-4 py-8 mx-auto bg-white dark:bg-rose-950 sticky top-0">
