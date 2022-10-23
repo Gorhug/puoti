@@ -4,12 +4,13 @@
 	// export let data: PageData;
 
 	import { applyAction, enhance } from '$app/forms';
+	import { PUBLIC_BRAND } from '$env/static/public';
 	import {inputStyle} from '$lib/tyylit'
 	export let form: { message?: string };
 	
 </script>
 <svelte:head>
-    <title>Luo tili - Kirjontastudio Helmi</title>
+    <title>Luo tili - {PUBLIC_BRAND}</title>
 </svelte:head>
 
 <h2 class="text-xl">Luo käyttäjätili:</h2>

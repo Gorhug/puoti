@@ -2,13 +2,14 @@
 	import { inputStyle } from '$lib/tyylit';
 	import type { ActionData } from './$types';
 	import { dev } from '$app/environment';
+	import { PUBLIC_BRAND } from '$env/static/public';
 	export let form: ActionData;
 
 	let markdown = form?.data?.get('viesti') ?? '';
 </script>
 
 <svelte:head>
-	<title>Ota yhteyttä - Kirjontastudio Helmi</title>
+	<title>Ota yhteyttä - {PUBLIC_BRAND}</title>
 </svelte:head>
 
 <form class="space-y-4 mt-8 flex flex-col px-8 w-96" method="post">

@@ -8,7 +8,7 @@
 
 	const session = getSession();
 	
-	import { PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
+	import { PUBLIC_BRAND, PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
 
 
 	let cloud_widget;
@@ -53,6 +53,9 @@
 {#if browser}
 	<script src="https://upload-widget.cloudinary.com/global/all.js" on:load={createWidget}></script>
 {/if}
+<svelte:head>
+	<title>Oma sivu - {PUBLIC_BRAND}</title>
+</svelte:head>
 
 <h2 class="text-lg mb-8">Profile</h2>
 

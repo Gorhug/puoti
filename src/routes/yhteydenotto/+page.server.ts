@@ -3,12 +3,10 @@ import { processForm } from '$lib/lomake'
 import { Remarkable } from 'remarkable'
 import { transport } from '$lib/server/email'
 import { invalid } from '@sveltejs/kit';
-
+import { PUBLIC_BRAND, PUBLIC_EMAIL } from '$env/static/public';
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 
-
-const helmiEmail = 'quiverth@gmail.com'
 
 export const actions: Actions = {
   default: async ({ request }) => {
@@ -37,8 +35,8 @@ export const actions: Actions = {
     const md = new Remarkable()
     const viesti = data.get('viesti') ?? ''
     const info = await transport.sendMail({
-      from: `Kirjontastudio Helmi lomakekäsittelijä <${helmiEmail}>`, // sender address
-      to: `Kirjontastudio Helmi <${helmiEmail}>`, // list of receivers
+      from: `${PUBLIC_BRAND} lomakekäsittelijä <${PUBLIC_EMAIL}>`, // sender address
+      to: `${PUBLIC_BRAND} <${PUBLIC_EMAIL}>`, // list of receivers
       subject: data.get('aihe') ?? 'Virhetilanne???', // Subject line
       text: viesti, // plain text body
       html: md.render(viesti), // html body
