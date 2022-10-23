@@ -142,10 +142,11 @@ ___
 	</form>
 {/if}
 
+<h2 class="text-2xl my-4">Tuotteesi joilla ei ole kategoriaa</h2>
 <table>
 	<thead
 		><tr>
-			<th>Tuote</th><th>Kuvaus</th><th>Hinta</th>
+			<th>Tuote</th><th>Hinta</th>
 		</tr></thead
 	>
 	<tbody>
@@ -155,40 +156,13 @@ ___
 					><a class="hover:underline font-sans tracking-tighter italic" href="/tuote/{t.tuote_id}"
 						>{t.nimi}</a
 					></td
-				><td>{@html md.render(t.kuvaus ?? '')}</td><td>{t.hinta}</td>
+				>
+				<td class="text-right">{t.hinta}</td>
 			</tr>
 		{/each}
 	</tbody>
 </table>
 
 <style>
-	:global(.markdown h1) {
-		font-size: xx-large;
-	}
-	:global(.markdown h2) {
-		font-size: x-large;
-	}
-	:global(.markdown h3) {
-		font-size: larger;
-	}
-	:global(.markdown h4) {
-		font-size: large;
-	}
-	:global(.markdown h5) {
-		font-size: medium;
-	}
-	:global(.markdown ul) {
-		list-style: disc;
-		margin-left: 20px;
-		padding-left: 20px;
-	}
-	:global(.markdown ol) {
-		list-style-type: upper-roman;
-		margin: 20px;
-		padding: 20px;
-	}
 
-	:global(.markdown td) {
-		border: thin solid black;
-	}
 </style>

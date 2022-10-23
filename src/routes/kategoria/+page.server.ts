@@ -5,7 +5,14 @@ import slug from 'slug'
 
 
 export const load: PageServerLoad = async () => {
-    const kategoriat = prisma_client.tuoteKategoria.findMany()
+    const kategoriat = prisma_client.tuoteKategoria.findMany({
+        include: { 
+            _count: {
+                select: { tuotteet: true }
+            }
+        }
+        
+    })
     return {
         kategoriat
     };

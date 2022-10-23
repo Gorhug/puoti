@@ -40,7 +40,13 @@ export const load: PageServerLoad = async ({ request, params }) => {
         luoja = luojaData.username
     }
     
-    return { tuote_id, tuote_nimi: tuote.nimi, luoja, luotu: tuote.luotu, paivitettu: tuote.paivitetty, valitut: tuote.kategoriat.map(valitutMapper), kategoriat: kategoriat.map(kategoriaMapper)};
+    return { tuote_id, 
+        tuote_nimi: tuote.nimi, 
+        luoja, 
+        luotu: tuote.luotu, 
+        paivitettu: tuote.paivitetty, 
+        kuvaus: tuote.kuvaus,
+        valitut: tuote.kategoriat.map(valitutMapper), kategoriat: kategoriat.map(kategoriaMapper)};
 };
 
 export const actions: Actions = {

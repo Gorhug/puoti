@@ -1,31 +1,35 @@
 import type { PageServerLoad, Actions } from './$types';
 import { prisma_client, auth } from '$lib/server/lucia';
-import { invalid } from '@sveltejs/kit';
+import { invalid, redirect } from '@sveltejs/kit';
 import slug from 'slug'
 import { npm_config_init_module } from '$env/static/private';
 import type { Tuote } from '@prisma/client';
 import { Prisma } from '@prisma/client'
 import { processForm } from '$lib/lomake'
+import { tuoteMapper } from '$lib/server/mappers';
 
 
+export const load: PageServerLoad = async ({ request, cookies }) => {
+    try {
+        const session = await auth.validateRequestByCookie(request);
 
-function tuoteMapper(t: Tuote) {
-    return {
-        nimi: t.nimi,
-        kuvaus: t.kuvaus,
-        hinta: t.hinta.toFixed(2),
-        tuote_id: t.tuote_id
+        const tuotteet = await prisma_client.tuote.findMany(
+            {
+                where: {
+                    luoja_id: session.user.user_id,
+                    kategoriat: {
+                        none: {}
+                    }
+                }
+            }
+        )
+
+        return {
+            tuotteet: tuotteet.map(tuoteMapper)
+        };
+    } catch {
+        throw redirect(302, '/login');
     }
-}
-
-
-
-export const load: PageServerLoad = async () => {
-    const tuotteet = await prisma_client.tuote.findMany()
-
-    return {
-        tuotteet: tuotteet.map(tuoteMapper)
-    };
 };
 
 

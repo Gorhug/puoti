@@ -13,11 +13,10 @@
 	let links = [
 		['', 'Etusivu'],
 		['yhteydenotto', 'Ota yhteyttä'],
-		['tuote', 'Tuotteet'],
-		// ['kategoria', 'Tuotekategoriat']
+		['kategoria', 'Tuotekategoriat']
 	];
 	if ($session) {
-		links.push(['profile', 'Oma sivu']);
+		links.push(['tuote', 'Lisää tuote'], ['profile', 'Oma sivu']);
 	} else {
 		links.push(['login', 'Kirjaudu']);
 	}
@@ -109,6 +108,34 @@
 			background-color: white;
 		}
 	}
+	:global(.markdown h1) {
+		font-size: xx-large;
+	}
+	:global(.markdown h2) {
+		font-size: x-large;
+	}
+	:global(.markdown h3) {
+		font-size: larger;
+	}
+	:global(.markdown h4) {
+		font-size: large;
+	}
+	:global(.markdown h5) {
+		font-size: medium;
+	}
+	:global(.markdown ul) {
+		list-style: disc;
+		margin-left: 20px;
+		padding-left: 20px;
+	}
+	:global(.markdown ol) {
+		list-style-type: upper-roman;
+		margin: 20px;
+		padding: 20px;
+	}
 
+	:global(.markdown td) {
+		border: thin solid black;
+	}
 	/* fontit logolle: Satisfy ja Courgette */
 </style>

@@ -4,12 +4,14 @@
 	import { browser } from '$app/environment';
 	import Svelecte from 'svelecte';
 	import { inputStyle } from '$lib/tyylit'
+	import { Remarkable } from 'remarkable'
 	const session = getSession();
 	export let form: ActionData
 	export let data: PageData;
 
+	const md = new Remarkable()
 
-	let valinnat = []
+	let valinnat: string[] = []
 	let valitut = data.valitut
 
 	import { PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
@@ -78,7 +80,11 @@
     <title>{data.tuote_nimi} - Kirjontastudio Helmi</title>
 </svelte:head>
 
-<h2>{data.tuote_nimi}</h2>
+<h2 class="text-2xl my-4">{data.tuote_nimi}</h2>
+
+<p class="my-8 markdown">
+{@html md.render(data.kuvaus?? '')}
+</p>
 <ul>
 	<li>Luoja: <a href="/profile/{data.luoja}">{data.luoja}</a></li>
 	<li>

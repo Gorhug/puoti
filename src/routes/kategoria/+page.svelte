@@ -2,13 +2,15 @@
 	import { getSession } from 'lucia-sveltekit/client';
     import type { PageData } from './$types';
     import type { ActionData } from './$types'
+    import { linkStyle } from '$lib/tyylit';
     export let form : ActionData;
     export let data: PageData;
     export const session = getSession()
 </script>
-<h2>Tuotekategoriat</h2>
+<h2 class="text-2xl mb-4">Tuotekategoriat</h2>
 
-{#if $session}
+<!-- {#if $session} -->
+{#if false}
     <form method="post">
         {#if form?.error}
             <p>Virhe: {form?.error} </p>
@@ -27,12 +29,12 @@
 
 <table>
     <thead><tr>
-        <th>Kategoria</th><th>Kuvaus</th>
+        <th>Kategoria</th><th>tuotteiden lkm</th>
     </tr></thead>
     <tbody>
         {#each data.kategoriat as k}
             <tr>
-                <td>{k.nimi}</td><td>{k.kuvaus ?? ''}</td>
+                <td><a class="{linkStyle}" href="/kategoria/{k.kategoria_id}">{k.nimi}</a></td><td class="text-right">{k._count.tuotteet}</td>
             </tr>
         {/each}
     </tbody>
