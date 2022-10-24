@@ -11,12 +11,10 @@ import { tuoteMapper } from '$lib/server/mappers';
 
 export const load: PageServerLoad = async ({ request, cookies }) => {
     try {
-        const session = await auth.validateRequestByCookie(request);
-
         const tuotteet = await prisma_client.tuote.findMany(
             {
                 where: {
-                    luoja_id: session.user.user_id,
+                    // luoja_id: session.user.user_id,
                     kategoriat: {
                         none: {}
                     }

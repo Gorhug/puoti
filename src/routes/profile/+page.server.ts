@@ -4,9 +4,9 @@ import { invalid, redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { cloudinary } from '$lib/server/cloudinary';
 
-export const load: PageServerLoad = async ({ cookies, request }) => {
+export const load: PageServerLoad = async ({ cookies, request, locals }) => {
 	try {
-		const session = await auth.validateRequestByCookie(request);
+		const session = await auth.validateRequestByCookie(request)
 		const avatar_img = 'avatar/' + session.user.username + '.webp'
 		const avatar_url = cloudinary.url(avatar_img,
 			{
