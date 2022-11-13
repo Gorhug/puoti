@@ -1,20 +1,17 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
-	import { signOut, getSession } from 'lucia-sveltekit/client';
-	import { onMount } from 'svelte';
+	import { signOut, getUser } from '@lucia-auth/sveltekit/client';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
-	import { inputStyle } from '$lib/tyylit'
+	import { inputStyle } from '$lib/tyylit';
 
-	const session = getSession();
-	
+	const user = getUser();
+
 	import { PUBLIC_BRAND, PUBLIC_CLOUD_APIKEY, PUBLIC_CLOUD_NAME } from '$env/static/public';
-
+	import { invalidateAll } from '$app/navigation';
 
 	let cloud_widget;
 	async function generateSignature(cb, data_to_sign) {
 		const heads = new Headers();
-		heads.append('Authorization', `Bearer ${$session?.access_token}`);
 		heads.append('content-type', 'application/json');
 		var requestOptions = {
 			method: 'POST',
@@ -30,24 +27,23 @@
 		} else cb(data.signature);
 	}
 	function createWidget() {
-		 cloud_widget = cloudinary.createUploadWidget( {
-				api_key:  PUBLIC_CLOUD_APIKEY ,
-				cloudName:  PUBLIC_CLOUD_NAME ,
-				uploadPreset: 'avatar',
-				uploadSignature:  generateSignature,
-				cropping: true,
-				sources: ["unsplash"],
-				multiple: false,
-				folder: "avatar",
-				croppingAspectRatio: 1.0,
-				publicId: $session?.user.username,
-				tags: ["users", "profile", "avatar"],
-				resourseType: 'image',
-				maxImageFileSize: 2000000, 
-				maxImageWidth: 2000
-			});
+		cloud_widget = cloudinary.createUploadWidget({
+			api_key: PUBLIC_CLOUD_APIKEY,
+			cloudName: PUBLIC_CLOUD_NAME,
+			uploadPreset: 'avatar',
+			uploadSignature: generateSignature,
+			cropping: true,
+			sources: ['unsplash'],
+			multiple: false,
+			folder: 'avatar',
+			croppingAspectRatio: 1.0,
+			publicId: $user?.username,
+			tags: ['users', 'profile', 'avatar'],
+			resourseType: 'image',
+			maxImageFileSize: 2000000,
+			maxImageWidth: 2000
+		});
 	}
-	
 </script>
 
 {#if browser}
@@ -60,15 +56,22 @@
 <h2 class="text-lg mb-8">Profile</h2>
 
 <div>
-	<p>Username: {$session?.user.username}</p>
+	<p>Username: {$user?.username}</p>
 </div>
 <div>
-	<img src="{$page.data.avatar_url}" alt="avatar">
+	<img src={$page.data.avatar_url} alt="avatar" />
 </div>
 {#if browser}
-<div>
-	<button id="upload_widget" class="cloudinary-button" on:click={cloud_widget.open}>Vaihda avatarkuva</button>
-
-</div>
+	<div>
+		<button id="upload_widget" class="cloudinary-button" on:click={cloud_widget.open}
+			>Vaihda avatarkuva</button
+		>
+	</div>
 {/if}
-<button class="p-2 mt-8 {inputStyle}" on:click={() => signOut('/')}>Kirjaudu ulos</button>
+<button
+	class="p-2 mt-8 {inputStyle}"
+	on:click={async () => {
+		await signOut();
+		invalidateAll();
+	}}>Kirjaudu ulos</button
+>

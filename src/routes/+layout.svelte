@@ -1,21 +1,27 @@
 <script lang="ts">
-	import { handleSilentRefresh, getSession } from 'lucia-sveltekit/client';
-	const session = getSession();
-	import '../app.css';
 	import { page } from '$app/stores';
-	import {PUBLIC_BRAND} from '$env/static/public'
-	handleSilentRefresh();
+	import { handleSession } from '@lucia-auth/sveltekit/client';
+
+	handleSession(page);
+	import '../app.css';
+
+	import { PUBLIC_BRAND } from '$env/static/public';
+	import { getUser } from '@lucia-auth/sveltekit/client';
+
+	const user = getUser();
+	const userId = $user?.userId;
 	// import type { LayoutData } from './$types';
 
 	// export let data: LayoutData;
-	const linkStyle = 'hover:border-b-4 border-rose-950 hover:bg-rose-200 border px-4 dark:text-gray-200 dark:border-gray-200 hover:dark:bg-rose-700';
+	const linkStyle =
+		'hover:border-b-4 border-rose-950 hover:bg-rose-200 border px-4 dark:text-gray-200 dark:border-gray-200 hover:dark:bg-rose-700';
 
 	let links = [
 		['', 'Etusivu'],
 		['yhteydenotto', 'Ota yhteyttä'],
 		['kategoria', 'Tuotekategoriat']
 	];
-	if ($session) {
+	if ($user) {
 		links.push(['tuote', 'Lisää tuote'], ['profile', 'Oma sivu']);
 	} else {
 		links.push(['login', 'Kirjaudu']);
@@ -39,17 +45,23 @@
 	<div class="hidden sm:flex sm:flex-row flex-col peer-checked:flex">
 		<span />
 		{#each links as [route, desc]}
-			<a href="/{route}" class="{linkStyle} {$page.routeId === route ? 'bg-rose-200 dark:bg-rose-700' : ''}"
+			<a
+				href="/{route}"
+				class="{linkStyle} {$page.route.id === route ? 'bg-rose-200 dark:bg-rose-700' : ''}"
 				>{desc}</a
 			>
 		{/each}
 
 		<label for="laatikko">
 			<span class="z-10 absolute top-10 right-10 sm:hidden"
-				><svg class="fill-white stroke-black stroke-2 dark:fill-rose-950" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+				><svg
+					class="fill-white stroke-black stroke-2 dark:fill-rose-950"
+					width="24px"
+					height="24px"
+					viewBox="0 0 24 24"
+					xmlns="http://www.w3.org/2000/svg"
 					><rect x="0" width="24" height="24" stroke-width="0" /><g
 						><path
-					
 							d="M18.36 19.78L12 13.41l-6.36 6.37-1.42-1.42L10.59 12 4.22 5.64l1.42-1.42L12 10.59l6.36-6.36 1.41 1.41L13.41 12l6.36 6.36z"
 						/></g
 					></svg
@@ -79,7 +91,9 @@
 <main class="text-rose-950 dark:bg-rose-950 dark:text-gray-200 px-4 sm:px-8 mb-24">
 	<slot />
 </main>
-<footer class="fixed bottom-0 w-full border-4 border-double text-center footerteksti bg-white dark:bg-rose-950 dark:text-gray-200">
+<footer
+	class="fixed bottom-0 w-full border-4 border-double text-center footerteksti bg-white dark:bg-rose-950 dark:text-gray-200"
+>
 	&copy; 2022 Ilkka Forsblom
 </footer>
 

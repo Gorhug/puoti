@@ -1,9 +1,8 @@
-import { invalid, redirect, type Actions } from '@sveltejs/kit';
+import { invalid, type Actions } from '@sveltejs/kit';
 import { auth } from '$lib/server/lucia';
-import { setCookie } from 'lucia-sveltekit';
 
 export const actions: Actions = {
-	default: async ({ request, cookies }) => {
+	default: async ({ request, locals }) => {
 		const form = await request.formData();
 		const username = form.get('username');
 		const password = form.get('password');
@@ -13,12 +12,13 @@ export const actions: Actions = {
 			});
 		}
 		try {
-			const userSession = await auth.authenticateUser('username', username, password);
-			setCookie(cookies, ...userSession.cookies);
+			const user = await auth.authenticateUser('username', username, password);
+			const session = await auth.createSession(user.userId);
+			locals.setSession(session);
 		} catch (e) {
 			const error = e as Error;
 			if (
-				error.message === 'AUTH_INVALID_IDENTIFIER_TOKEN' ||
+				error.message === 'AUTH_INVALID_PROVIDER_ID' ||
 				error.message === 'AUTH_INVALID_PASSWORD'
 			) {
 				return invalid(400, {
@@ -31,6 +31,14 @@ export const actions: Actions = {
 				message: 'Unknown error occurred'
 			});
 		}
-		throw redirect(302, '/login');
 	}
+};
+
+import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ locals }) => {
+	const session = await locals.getSession();
+	if (session) throw redirect(302, '/profile');
+	return {};
 };

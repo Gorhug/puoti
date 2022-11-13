@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applyAction, enhance } from '$app/forms';
 	import { PUBLIC_BRAND } from '$env/static/public';
-	import {inputStyle} from '$lib/tyylit'
+	import {inputStyle, linkStyle} from '$lib/tyylit'
 	
 	export let form: { message?: string };
 
@@ -23,14 +23,6 @@
 				form.message = 'Invalid input';
 				cancel();
 			}
-			return async ({ result }) => {
-				if (result.type === 'redirect') {
-					window.location.href = result.location; // invalidateAll() + goto() will not work
-				}
-				if (result.type === 'invalid') {
-					applyAction(result);
-				}
-			};
 		}}
 	>
 		<label for="username">Käyttäjänimi:</label><br />
@@ -41,6 +33,6 @@
 	</form>
 	<p class="error">{form?.message || ''}</p>
 	<p class="mt-8">
-	<a class="font-semibold font-sans hover:text-black italic hover:underline" href="/signup">Luo uusi tili</a>
+	<a class="{linkStyle}" href="/signup">Luo uusi tili</a>
 	</p>
 </div>

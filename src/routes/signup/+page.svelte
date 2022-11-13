@@ -5,12 +5,12 @@
 
 	import { applyAction, enhance } from '$app/forms';
 	import { PUBLIC_BRAND } from '$env/static/public';
-	import {inputStyle} from '$lib/tyylit'
+	import { inputStyle, linkStyle } from '$lib/tyylit';
 	export let form: { message?: string };
-	
 </script>
+
 <svelte:head>
-    <title>Luo tili - {PUBLIC_BRAND}</title>
+	<title>Luo tili - {PUBLIC_BRAND}</title>
 </svelte:head>
 
 <h2 class="text-xl">Luo käyttäjätili:</h2>
@@ -28,10 +28,10 @@
 		return async ({ result }) => {
 			if (result.type === 'redirect') {
 				window.location.href = result.location; // invalidateAll() + goto() will not work
+				return;
 			}
-			if (result.type === 'invalid') {
-				applyAction(result);
-			}
+
+			applyAction(result);
 		};
 	}}
 >
@@ -71,7 +71,7 @@
 </form>
 <p class="error">{form?.message || ''}</p>
 <p class="mt-8">
-	<a class="font-semibold font-sans hover:text-black italic hover:underline" href="/login"
+	<a class="{linkStyle}" href="/login"
 		>Kirjaudu sisään</a
 	>
 </p>
