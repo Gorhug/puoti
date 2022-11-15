@@ -5,7 +5,7 @@
 	import Svelecte from 'svelecte';
 	import { inputStyle } from '$lib/tyylit'
 	import { Remarkable } from 'remarkable'
-	import { slide } from 'svelte/transition'
+	// import { slide } from 'svelte/transition'
 	
 	const user = getUser()
 	export let form: ActionData
@@ -63,6 +63,35 @@
 		}
 	}
 
+
+	import { kori } from '$lib/kori';
+	function removeItem(tuote: string) {
+		for (let item of $kori.tuotteet) {
+			if (item.tuoteId === tuote) {
+				--item.lkm;
+				if (item.lkm <= 0) {
+					$kori.tuotteet = $kori.tuotteet.filter((cartItem) => cartItem.tuoteId != tuote);
+				}
+                $kori = $kori
+				return;
+			}
+		}
+	}
+	function addItem() {
+		const tuoteId = data.tuote_id
+		const a_hinta = parseFloat(data.hinta)
+		for (let item of $kori.tuotteet) {
+			if (item.tuoteId === tuoteId) {
+				++item.lkm
+                item.a_hinta = a_hinta
+                $kori = $kori
+				return;
+			}
+		}
+        $kori.tuotteet.push({tuoteId, lkm: 1, a_hinta })
+        $kori = $kori
+	}
+
 </script>
 
 <svelte:head>
@@ -71,14 +100,15 @@
 
 <h2 class="text-2xl my-4">{data.tuote_nimi}</h2>
 
-
+<h2 class="text-2xl my-4">{data.hinta}&nbsp;€</h2>
+<button class="{inputStyle}" on:click={addItem}>Lisää ostoskoriin</button>
 <p>
 
 	{#each [carouselPhotos[index]] as src (index)}
-	<img transition:slide {src} alt="tuotekuva {index}" />	
+	<img {src} alt="tuotekuva {index+1}" />	
 {/each}
 
-<button  class="{inputStyle}" on:click={next}>Next!</button>
+<button  class="{inputStyle}" on:click={next}>Seuraava kuva</button>
 
 </p>
 

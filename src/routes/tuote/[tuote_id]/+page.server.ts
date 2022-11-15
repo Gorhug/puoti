@@ -92,6 +92,7 @@ export const load: PageServerLoad = async ({ params }) => {
         luotu: tuote.luotu,
         paivitettu: tuote.paivitetty,
         kuvaus: tuote.kuvaus,
+        hinta: tuote.hinta.toFixed(2),
         valitut: tuote.kategoriat.map(valitutMapper),
         kategoriat: kategoriat.map(kategoriaMapper),
         simple_list

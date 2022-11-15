@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { getSession } from 'lucia-sveltekit/client';
+//	import { getUser } from '@lucia-auth/sveltekit/client';
     import type { PageData } from './$types';
     import type { ActionData } from './$types'
     import { linkStyle } from '$lib/tyylit';
 	import { PUBLIC_BRAND } from '$env/static/public';
     export let form : ActionData;
     export let data: PageData;
-    export const session = getSession()
+    // export const user = getUser()
 </script>
 <svelte:head>
 	<title>Tuotekategoriat - {PUBLIC_BRAND}</title>
 </svelte:head>
 <h2 class="text-2xl mb-4">Tuotekategoriat</h2>
 
-<!-- {#if $session} -->
+<!-- {#if $user} -->
 {#if false}
     <form method="post">
         {#if form?.error}
@@ -22,7 +22,7 @@
         {#if form?.success}
             <p>Kategorian lisäys onnistui</p>
         {/if}
-        <input type="hidden" name="_lucia" value="{$session?.access_token}">
+
         <label for="nimi">Kategorian nimi</label>
         <input id="nimi" name="nimi" required value="{form?.nimi ?? ''}">
         <label for="kuvaus">Kuvaus</label>

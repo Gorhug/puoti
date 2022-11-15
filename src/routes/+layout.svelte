@@ -4,7 +4,7 @@
 
 	handleSession(page);
 	import '../app.css';
-
+	
 	import { PUBLIC_BRAND } from '$env/static/public';
 	import { getUser } from '@lucia-auth/sveltekit/client';
 
@@ -26,6 +26,8 @@
 	} else {
 		links.push(['login', 'Kirjaudu']);
 	}
+	import { kori } from '$lib/kori';
+	$: total = $kori.tuotteet.reduce((sum, item) => sum + item.a_hinta * item.lkm, 0)
 </script>
 
 <div class="h-full w-full fixed -z-10 dark:bg-rose-950" />
@@ -41,6 +43,7 @@
 			Helmi
 		</h3>
 	</div>
+	<div class="dark:text-gray-200 p-2 tracking-tighter italic font-medium text-rose-950" >{$kori.tuotteet.length}: {total}&nbsp;€</div>
 	<input id="laatikko" type="checkbox" class="peer" hidden />
 	<div class="hidden sm:flex sm:flex-row flex-col peer-checked:flex">
 		<span />
