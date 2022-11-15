@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { getSession } from 'lucia-sveltekit/client';
+	// import { getSession } from 'lucia-sveltekit/client';
+	import { getUser } from '@lucia-auth/sveltekit/client';
 	import type { PageData } from './$types';
 	import type { ActionData } from './$types';
 	import { inputStyle } from '$lib/tyylit';
@@ -59,7 +60,7 @@ ___
 	}
 
 	let markdown = form?.data?.get('kuvaus') ?? oletusKuvaus;
-	export const session = getSession();
+	export const user = getUser();
 </script>
 
 <svelte:head>
@@ -68,7 +69,7 @@ ___
 
 <h2 class="text-2xl text-center pb-5">Tuotteet</h2>
 
-{#if $session}
+{#if $user}
 	<h3 class="text-xl pb-3">Lisää tuote:</h3>
 	<form method="post" class="flex flex-col px-8">
 		{#if form?.error}
@@ -88,7 +89,6 @@ ___
 				>{form?.nimi}</a
 			></p>
 		{/if}
-		<input type="hidden" name="_lucia" value={$session?.access_token} />
 
 		<label for="nimi">Tuotteen nimi:</label>
 		<input class={inputStyle} id="nimi" name="nimi" required value={form?.data?.get('nimi') ?? ''} />

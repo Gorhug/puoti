@@ -2,19 +2,18 @@ import type { PageServerLoad, Actions } from './$types';
 import { prisma_client, auth } from '$lib/server/lucia';
 import { invalid, redirect } from '@sveltejs/kit';
 import slug from 'slug'
-import { npm_config_init_module } from '$env/static/private';
-import type { Tuote } from '@prisma/client';
 import { Prisma } from '@prisma/client'
 import { processForm } from '$lib/lomake'
 import { tuoteMapper } from '$lib/server/mappers';
 
 
-export const load: PageServerLoad = async ({ request, cookies }) => {
-    try {
+export const load: PageServerLoad = async ({ locals }) => {
+    const {session, user} = await locals.getSessionUser()
+    if (session) {
         const tuotteet = await prisma_client.tuote.findMany(
             {
                 where: {
-                    // luoja_id: session.user.user_id,
+                    luoja_id: user.userId,
                     kategoriat: {
                         none: {}
                     }
@@ -25,7 +24,7 @@ export const load: PageServerLoad = async ({ request, cookies }) => {
         return {
             tuotteet: tuotteet.map(tuoteMapper)
         };
-    } catch {
+    } else {
         throw redirect(302, '/login');
     }
 };
@@ -34,21 +33,19 @@ export const load: PageServerLoad = async ({ request, cookies }) => {
 
 
 export const actions: Actions = {
-    default: async ({ cookies, request }) => {
+    default: async ({ request, locals }) => {
         const required = ['nimi', 'hinta']
         const optional = ['kuvaus']
         const expected = [...required, ...optional]
 
         let user_id = ''
         let errors: Array<string> = []
-        try {
-            const session = await auth.validateFormSubmission(request)
-            user_id = session.user.user_id
-        } catch (e) {
-            console.log(e)
+        const {session, user} = await locals.getSessionUser()
+ 
+        if (!session) {
             return invalid(401, { error: 'Authentication required', nimi: '', kuvaus: '' })
         }
-
+        user_id = user.userId
         const form = processForm(await request.formData(), required, expected)
         const data = form.entries
         const missing = form.missing
