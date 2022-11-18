@@ -4,7 +4,7 @@
 
 	handleSession(page);
 	import '../app.css';
-	
+
 	import { PUBLIC_BRAND } from '$env/static/public';
 	import { getUser } from '@lucia-auth/sveltekit/client';
 
@@ -27,7 +27,8 @@
 		links.push(['login', 'Kirjaudu']);
 	}
 	import { kori } from '$lib/kori';
-	$: total = $kori.tuotteet.reduce((sum, item) => sum + item.a_hinta * item.lkm, 0)
+	$: total = $kori.tuotteet.reduce((sum, item) => sum + item.a_hinta * item.lkm, 0);
+	$: lkm = $kori.tuotteet.reduce((sum, item) => sum + item.lkm, 0)
 </script>
 
 <div class="h-full w-full fixed -z-10 dark:bg-rose-950" />
@@ -36,6 +37,7 @@
 </h1>
 
 <nav class="w-full flex justify-between px-4 py-8 mx-auto bg-white dark:bg-rose-950 sticky top-0">
+	
 	<div>
 		<h3
 			class="border border-rose-950 dark:text-gray-200 dark:border-gray-200 rounded-full p-2 tracking-tighter italic font-medium text-rose-950 logoteksti"
@@ -43,9 +45,25 @@
 			Helmi
 		</h3>
 	</div>
-	<div class="dark:text-gray-200 p-2 tracking-tighter italic font-medium text-rose-950" >{$kori.tuotteet.length}: {total}&nbsp;€</div>
+	<div class="dark:text-gray-200 p-2 tracking-tighter italic font-medium text-rose-950 relative">
+		<a href="/ostoskori" class="flex flex-col {linkStyle}"> 
+			<span class="flex flex-row"><svg
+				width="16px"
+				height="16px"
+				viewBox="0 0 16 16"
+				xmlns="http://www.w3.org/2000/svg"
+				fill="currentColor"
+				class="bi bi-cart w-6 h-6" 
+			>
+				<path
+					d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"
+				/>
+			</svg><span class="rounded-full dark:bg-red-800 bg-red-400 ml-2 p-1">{lkm}</span></span><span>{total.toFixed(2)}&nbsp;€</span></a
+		>
+	</div>
+
 	<input id="laatikko" type="checkbox" class="peer" hidden />
-	<div class="hidden sm:flex sm:flex-row flex-col peer-checked:flex">
+	<div class="hidden md:flex md:flex-row flex-col peer-checked:flex">
 		<span />
 		{#each links as [route, desc]}
 			<a
@@ -58,7 +76,7 @@
 		<label for="laatikko">
 			<span class="z-10 absolute top-10 right-10 sm:hidden"
 				><svg
-					class="fill-white stroke-black stroke-2 dark:fill-rose-950"
+					class="fill-white stroke-black stroke-2 dark:stroke-white dark:fill-rose-950"
 					width="24px"
 					height="24px"
 					viewBox="0 0 24 24"
@@ -73,10 +91,11 @@
 		</label>
 	</div>
 	<label for="laatikko">
-		<span class="flex sm:hidden absolute top-10 right-10">
+		<span class="flex md:hidden absolute top-10 right-10">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
-				class="w-6 h-6"
+				class="w-6 h-6n fill-white stroke-black stroke-2 dark:stroke-white dark:fill-rose-950"
+				
 				fill="none"
 				viewBox="0 0 24 24"
 				stroke="currentColor"
