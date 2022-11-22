@@ -79,6 +79,7 @@
 	}
 	function addItem() {
 		const tuoteId = data.tuote_id
+		const nimi = data.tuote_nimi
 		const a_hinta = parseFloat(data.hinta)
 		for (let item of $kori.tuotteet) {
 			if (item.tuoteId === tuoteId) {
@@ -88,7 +89,7 @@
 				return;
 			}
 		}
-        $kori.tuotteet.push({tuoteId, lkm: 1, a_hinta })
+        $kori.tuotteet.push({tuoteId, nimi, lkm: 1, a_hinta })
         $kori = $kori
 	}
 
