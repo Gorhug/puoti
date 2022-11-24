@@ -12,19 +12,19 @@ model Viesti {
   email      String
   aihe       String
   viesti     String
-  uutiskirje Boolean @default(false)
+  uutiskirje Boolean  @default(false)
   milloin    DateTime @default(now())
 
   @@id([email, milloin])
 }
 
 model TuoteKategoria {
-  kategoria_id String    @id @default(cuid())
-  nimi         String    @unique
+  kategoria_id String   @id @default(cuid())
+  nimi         String   @unique
   kuvaus       String?
   tuotteet     Tuote[]
-  luotu        DateTime  @default(now())
-  paivitetty   DateTime  @updatedAt
+  luotu        DateTime @default(now())
+  paivitetty   DateTime @updatedAt
 }
 
 model Tuote {
@@ -33,6 +33,7 @@ model Tuote {
   kuvaus     String?
   hinta      Decimal
   kategoriat TuoteKategoria[]
+  tilaukset  TuoteTilaukset[]
   luoja      User             @relation(fields: [luoja_id], references: [id])
   luoja_id   String
   luotu      DateTime         @default(now())
@@ -40,15 +41,15 @@ model Tuote {
 }
 
 model User {
-  id               String         @id @unique @default(cuid())
-  provider_id      String         @unique
-  hashed_password  String?
-  session          Session[]
-  username         String         @unique
-  email            String?
-  tuotteet         Tuote[]
-  luotu            DateTime       @default(now())
-  paivitetty       DateTime       @updatedAt
+  id              String    @id @unique @default(cuid())
+  provider_id     String    @unique
+  hashed_password String?
+  session         Session[]
+  username        String    @unique
+  email           String?
+  tuotteet        Tuote[]
+  luotu           DateTime  @default(now())
+  paivitetty      DateTime  @updatedAt
 
   @@map("user")
 }
@@ -62,4 +63,29 @@ model Session {
 
   @@index([user_id])
   @@map("session")
+}
+
+model Tilaus {
+  id             String           @id @unique @default(cuid())
+  tuotteet       TuoteTilaukset[]
+  email          String
+  summa          Int
+  maksettu       Boolean          @default(false)
+  toimitettu     Boolean          @default(false)
+  transaction_id String?
+  luotu          DateTime         @default(now())
+  paivitetty     DateTime         @updatedAt
+}
+
+model TuoteTilaukset {
+  tilaus     Tilaus   @relation(fields: [tilaus_id], references: [id])
+  tilaus_id  String
+  tuote      Tuote    @relation(fields: [tuote_id], references: [tuote_id])
+  tuote_id   String
+  lkm        Int
+  a_hinta    Int // eurosentti
+  luotu      DateTime @default(now())
+  paivitetty DateTime @updatedAt
+
+  @@id([tilaus_id, tuote_id])
 }

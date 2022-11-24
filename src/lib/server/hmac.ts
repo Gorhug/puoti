@@ -20,7 +20,7 @@ export const calculateHmac = (secret: string, params: PaytrailHeaders, body: obj
   return crypto.createHmac('sha256', secret).update(hmacPayload).digest('hex');
 };
 
-interface PaytrailHeaders {
+export interface PaytrailHeaders {
  [propertyName: string]: string
 }
 

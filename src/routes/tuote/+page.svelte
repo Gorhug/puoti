@@ -91,7 +91,7 @@ ___
 		{/if}
 
 		<label for="nimi">Tuotteen nimi:</label>
-		<input class={inputStyle} id="nimi" name="nimi" required value={form?.data?.get('nimi') ?? ''} />
+		<input class={inputStyle} id="nimi" name="nimi" maxlength="100" required value={form?.data?.get('nimi') ?? ''} />
 
 		<label for="hinta">Tuotteen hinta:</label>
 		<span

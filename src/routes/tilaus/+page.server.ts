@@ -2,6 +2,10 @@ import type { PageServerLoad, Actions } from './$types';
 import { invalid } from '@sveltejs/kit';
 import { prisma_client } from '$lib/server/lucia';
 import {type Tuote, Prisma} from '@prisma/client'
+import { type PaytrailHeaders, calculateHmac } from '$lib/server/hmac';
+import { dev } from '$app/environment';
+import { env as p_env } from '$env/dynamic/private'
+import crypto from 'crypto'
 
 export const load: PageServerLoad = async () => {
     return {};
@@ -13,9 +17,15 @@ export const load: PageServerLoad = async () => {
 //       id: { in: [22, 91, 14, 2, 5] },
 //     },
 //   })
+interface Item {
+    unitPrice: number,
+    units: number,
+    vatPercentage: number,
+    productCode: string,
+}
 
 export const actions: Actions = {
-    default: async ({ request }) => {
+    default: async ({ url, request }) => {
  
         let errors: string[] = []
 
@@ -23,12 +33,10 @@ export const actions: Actions = {
         const form = await request.formData()
        //const tuotteet_l = JSON.parse(form.get('tuotteet')?.toString() ?? '')
         const tuotteet_l = [{ tuoteId: 'testi', lkm: 2}]
-      //  const db_tuotteet : {tuote: Tuote, lkm:number}[] = []
   
-        const tilaus : Map<string, {
-            tuote: Tuote | null,
-            lkm: number
-        }> = new Map()
+  
+        const tilaus : Map<string, number> = new Map()
+ 
         for (const tuote_l of tuotteet_l) {
             const lkm = tuote_l.lkm
 
@@ -38,7 +46,7 @@ export const actions: Actions = {
             }
 
             
-            tilaus.set(tuote_l.tuoteId, {tuote: null, lkm})
+            tilaus.set(tuote_l.tuoteId, lkm)
  
         }
         const db_tuotteet = await prisma_client.tuote.findMany({
@@ -47,13 +55,66 @@ export const actions: Actions = {
             }
         })
         let summa = new Prisma.Decimal(0)
+        const items : Item[] = []
+        const tuotteet = []
         for (const tuote of db_tuotteet) {
-            const t = tilaus.get(tuote.tuote_id)
-            if (t) {
-                tilaus.set(tuote.tuote_id, {tuote, lkm: t.lkm})
-                summa = summa.plus(tuote.hinta.times(t.lkm))
+            const lkm = tilaus.get(tuote.tuote_id)
+            if (lkm) {
+                const a_hinta = tuote.hinta.times(100).toDecimalPlaces(0).toNumber()
+                items.push({
+                    unitPrice: a_hinta,
+                    units: lkm,
+                    vatPercentage: 24,
+                    productCode: tuote.tuote_id
+
+                })
+                tuotteet.push({
+                    lkm,
+                    a_hinta,
+                    tuote: {
+                        connect: {
+                            id: tuote.tuote_id
+                        }
+                    }
+                })
+                summa = summa.plus(tuote.hinta.times(lkm))
             }
         }
 
+        const email = form.get('email')?.toString() ?? ''
+        const amount = summa.times(100).toDecimalPlaces(0).toNumber()
+        const tilaus_db = await prisma_client.tilaus.create({
+            data: {
+                email,
+                summa: amount,
+                tuotteet: {create: tuotteet}
+            }
+        })
+        const timestamp = new Date().toISOString()
+        const headers : PaytrailHeaders = {
+            'checkout-account': p_env.PAYTRAIL_ACCOUNT,
+            'checkout-algorithm': 'sha256',
+            'checkout-method': 'POST',
+            'checkout-nonce': crypto.randomBytes(16).toString("base64"),
+            'checkout-timestamp': timestamp,
+          };
+        const palvelin = `https://${url.host}`
+        const body = {
+            stamp: tilaus_db.id,
+            reference: 'helmi',
+            amount,
+            currency: 'EUR',
+            language: 'FI',
+            items,
+            customer: {
+              email,
+            },
+            redirectUrls: {
+              success: `${palvelin}/tilaus/onnistui`,
+              cancel: `${palvelin}/tilaus/peruttu`,
+            },
+          };
+          const hmac = calculateHmac(p_env.PAYTRAIL_SECRET, headers, body)
+          
     }
 }
