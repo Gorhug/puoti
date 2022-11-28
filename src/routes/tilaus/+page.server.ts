@@ -23,16 +23,16 @@ interface Item {
     vatPercentage: number,
     productCode: string,
 }
-
+const paytrail_url = new URL('https://services.paytrail.com/payments')
 export const actions: Actions = {
     default: async ({ url, request }) => {
- 
+        
         let errors: string[] = []
 
         
         const form = await request.formData()
-       //const tuotteet_l = JSON.parse(form.get('tuotteet')?.toString() ?? '')
-        const tuotteet_l = [{ tuoteId: 'testi', lkm: 2}]
+        const tuotteet_l = JSON.parse(form.get('tuotteet')?.toString() ?? '')
+      //  const tuotteet_l = [{ tuoteId: 'testi', lkm: 2}]
   
   
         const tilaus : Map<string, number> = new Map()
@@ -83,6 +83,7 @@ export const actions: Actions = {
 
         const email = form.get('email')?.toString() ?? ''
         const amount = summa.times(100).toDecimalPlaces(0).toNumber()
+    //    return {email, amount}
         const tilaus_db = await prisma_client.tilaus.create({
             data: {
                 email,
@@ -90,8 +91,8 @@ export const actions: Actions = {
                 tuotteet: {create: tuotteet}
             }
         })
-        const timestamp = new Date().toISOString()
-        const headers : PaytrailHeaders = {
+        const timestamp = tilaus_db.luotu.toISOString()
+        const p_headers : PaytrailHeaders = {
             'checkout-account': p_env.PAYTRAIL_ACCOUNT,
             'checkout-algorithm': 'sha256',
             'checkout-method': 'POST',
@@ -114,7 +115,30 @@ export const actions: Actions = {
               cancel: `${palvelin}/tilaus/peruttu`,
             },
           };
-          const hmac = calculateHmac(p_env.PAYTRAIL_SECRET, headers, body)
+          const hmac = calculateHmac(p_env.PAYTRAIL_SECRET, p_headers, body)
           
+          const headers = new Headers(p_headers)
+          headers.append('signature', hmac)
+          headers.append('content-type','application/json; charset=utf-8')
+          const response = await fetch(paytrail_url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(body)
+          })
+          
+          const r_headers : PaytrailHeaders = {}
+          const r_body = await response.json()
+          let r_sig
+          for (const [name, value] of response.headers.entries()) {
+            if (name.startsWith('checkout-')) {
+                r_body[name] = value
+            } else if (name == 'signature') {
+                r_sig = value
+            }
+          }
+          if (!r_sig || r_sig != calculateHmac(p_env.PAYTRAIL_SECRET, r_headers, r_body)) {
+            errors.push('Maksupalvelun antama viesti ei ole oikein allekirjoitettu')
+          }
+          return {email, amount, errors, providers: r_body.providers}
     }
 }

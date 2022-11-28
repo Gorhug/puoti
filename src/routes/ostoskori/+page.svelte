@@ -52,7 +52,7 @@
 </table>
 
 {#if $kori.tuotteet.length > 0}
-<form class="space-y-4 mt-8 flex flex-col px-8 w-96" method="POST" target="/tilaus">
+<form class="space-y-4 mt-8 flex flex-col px-8 w-96" method="POST" action="/tilaus">
 <div>
 	<input type="hidden" name="tuotteet" value="{JSON.stringify($kori.tuotteet)}"/>
 	<label for="email">Sähköpostiosoite:</label>
