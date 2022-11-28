@@ -10,7 +10,7 @@ const SECRET = 'SAIPPUAKAUPPIAS';
  * @param {object} params Headers or query string parameters
  * @param {object|undefined} body Request body or empty string for GET requests
  */
-export const calculateHmac = (secret: string, params: PaytrailHeaders, body: object|undefined) => {
+export const calculateHmac = (secret: string, params: PaytrailHeaders, body: object|undefined = undefined) => {
   const hmacPayload = Object.keys(params)
     .sort()
     .map((key) => [key, params[key]].join(':'))
@@ -20,6 +20,20 @@ export const calculateHmac = (secret: string, params: PaytrailHeaders, body: obj
   return crypto.createHmac('sha256', secret).update(hmacPayload).digest('hex');
 };
 
+export function hmacHelper(secret: string, params: URLSearchParams|Headers, body: object|undefined = undefined) {
+  let r_sig
+  const r_headers: PaytrailHeaders = {}
+
+  for (const [name, value] of params.entries()) {
+    if (name.startsWith('checkout-')) {
+        r_headers[name] = value
+    } else if (name == 'signature') {
+        r_sig = value
+    }
+  }
+  return r_sig == calculateHmac(secret, r_headers, body) 
+  
+}
 export interface PaytrailHeaders {
  [propertyName: string]: string
 }

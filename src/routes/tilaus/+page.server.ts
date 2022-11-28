@@ -1,13 +1,16 @@
 import type { PageServerLoad, Actions } from './$types';
-import { invalid } from '@sveltejs/kit';
+import { invalid, redirect } from '@sveltejs/kit';
 import { prisma_client } from '$lib/server/lucia';
 import {type Tuote, Prisma} from '@prisma/client'
-import { type PaytrailHeaders, calculateHmac } from '$lib/server/hmac';
+import { type PaytrailHeaders, calculateHmac, hmacHelper } from '$lib/server/hmac';
 import { dev } from '$app/environment';
 import { env as p_env } from '$env/dynamic/private'
 import crypto from 'crypto'
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({request}) => {
+    if (request.method == 'GET') {
+        throw redirect(302, '/ostoskori')
+    }
     return {};
 };
 
@@ -24,6 +27,204 @@ interface Item {
     productCode: string,
 }
 const paytrail_url = new URL('https://services.paytrail.com/payments')
+
+
+const response_ex = {
+    "transactionId": "5770642a-9a02-4ca2-8eaa-cc6260a78eb6",
+    "href": "https://services.paytrail.com/pay/5770642a-9a02-4ca2-8eaa-cc6260a78eb6",
+    "reference": "809759248",
+    "providers": [
+      {
+        "url": "https://maksu.pivo.fi/api/payments",
+        "icon": "https://static.paytrail.com/static/img/pivo_140x75.png",
+        "svg": "https://static.paytrail.com/static/img/payment-methods/pivo-siirto.svg",
+        "name": "Pivo",
+        "group": "mobile",
+        "id": "pivo",
+        "parameters": [
+          {
+            "name": "acquiring_id",
+            "value": "checkout"
+          },
+          {
+            "name": "amount",
+            "value": "base64 MTUyNQ=="
+          },
+          {
+            "name": "cancel_url",
+            "value": "base64 aHR0cHM6Ly9hcGkuY2hlY2tvdXQuZmkvcGF5bWVudHMvODA2MjEzOTIvcGl2by9jYW5jZWw="
+          },
+          {
+            "name": "merchant_business_id",
+            "value": "base64 MTIzNDU2LTc="
+          },
+          {
+            "name": "merchant_name",
+            "value": "base64 VGVzdGkgT3k="
+          },
+          {
+            "name": "reference",
+            "value": "base64 ODA5NzU5MjQ4"
+          },
+          {
+            "name": "reject_url",
+            "value": "base64 aHR0cHM6Ly9hcGkuY2hlY2tvdXQuZmkvcGF5bWVudHMvODA2MjEzOTIvcGl2by9jYW5jZWw="
+          },
+          {
+            "name": "return_url",
+            "value": "base64 aHR0cHM6Ly9hcGkuY2hlY2tvdXQuZmkvcGF5bWVudHMvODA2MjEzOTIvcGl2by9zdWNjZXNz"
+          },
+          {
+            "name": "stamp",
+            "value": "base64 ODA5NzU5MjQ4"
+          },
+          {
+            "name": "message",
+            "value": "base64 Y2hlY2tvdXQubXljYXNoZmxvdy5maQ=="
+          },
+          {
+            "name": "merchant_webstore_url",
+            "value": "base64 aHR0cDovL2NoZWNrb3V0Lm15Y2FzaGZsb3cuZmk="
+          },
+          {
+            "name": "signature",
+            "value": "checkout_qa 86b43453732cf8aeb91b08dd42707fd6973819f4f23abffbfd27563f351d6b07"
+          }
+        ]
+      },
+      {
+        "url": "https://v1.api.paymenthighway.io/form/view/masterpass",
+        "icon": "https://static.paytrail.com/static/img/masterpass_arrow_140x75.png",
+        "svg": "https://static.paytrail.com/static/img/payment-methods/masterpass.svg",
+        "name": "Masterpass",
+        "group": "mobile",
+        "id": "masterpass",
+        "parameters": [
+          {
+            "name": "sph-account",
+            "value": "test"
+          },
+          {
+            "name": "sph-merchant",
+            "value": "test_merchantId"
+          },
+          {
+            "name": "sph-api-version",
+            "value": "20170627"
+          },
+          {
+            "name": "sph-timestamp",
+            "value": "2018-07-06T11:10:14Z"
+          },
+          {
+            "name": "sph-request-id",
+            "value": "00228f0f-85b3-433a-8071-b38e63a3b024"
+          },
+          {
+            "name": "sph-amount",
+            "value": "1525"
+          },
+          {
+            "name": "sph-currency",
+            "value": "EUR"
+          },
+          {
+            "name": "sph-order",
+            "value": "809759248"
+          },
+          {
+            "name": "language",
+            "value": "FI"
+          },
+          {
+            "name": "description",
+            "value": "checkout.mycashflow.fi"
+          },
+          {
+            "name": "sph-success-url",
+            "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/success"
+          },
+          {
+            "name": "sph-cancel-url",
+            "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/cancel"
+          },
+          {
+            "name": "sph-failure-url",
+            "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/failure"
+          },
+          {
+            "name": "sph-webhook-success-url",
+            "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/callback/success"
+          },
+          {
+            "name": "sph-webhook-cancel-url",
+            "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/callback/cancel"
+          },
+          {
+            "name": "sph-webhook-failure-url",
+            "value": "https://services.paytrail.com/payments/5770642a-9a02-4ca2-8eaa-cc6260a78eb6/masterpass/callback/failure"
+          },
+          {
+            "name": "sph-webhook-delay",
+            "value": "60"
+          },
+          {
+            "name": "signature",
+            "value": "SPH1 testKey 17294419ee622be500d1acd654fde3b5462c0ea51d0a9285809d0856febeb81c"
+          }
+        ]
+      }
+    ],
+    "customProviders": {
+      "applepay": {
+        "parameters": [
+          {
+            "name": "checkout-transaction-id",
+            "value": "5770642a-9a02-4ca2-8eaa-cc6260a78eb6"
+          },
+          {
+            "name": "checkout-account",
+            "value": "test"
+          },
+          {
+            "name": "checkout-method",
+            "value": "POST"
+          },
+          {
+            "name": "checkout-algorithm",
+            "value": "sha256"
+          },
+          {
+            "name": "checkout-timestamp",
+            "value": "2018-07-06T11:10:14Z"
+          },
+          {
+            "name": "checkout-nonce",
+            "value": "4ae5346f-bfee-4350-ad03-046c9e836d5e"
+          },
+          {
+            "name": "signature",
+            "value": "fc0d880e3edd845711da5feda1b166491beded1f8d475a54f515f34bee889525"
+          },
+          {
+            "name": "amount",
+            "value": "15.25"
+          },
+          {
+            "name": "label",
+            "value": "Checkout Finland Oy"
+          },
+          {
+            "name": "currency",
+            "value": "EUR"
+          }
+        ]
+      }
+    }
+  }
+
+
+
 export const actions: Actions = {
     default: async ({ url, request }) => {
         
@@ -83,7 +284,7 @@ export const actions: Actions = {
 
         const email = form.get('email')?.toString() ?? ''
         const amount = summa.times(100).toDecimalPlaces(0).toNumber()
-    //    return {email, amount}
+        // return {email, amount, errors, providers: response_ex.providers}
         const tilaus_db = await prisma_client.tilaus.create({
             data: {
                 email,
@@ -119,6 +320,7 @@ export const actions: Actions = {
           
           const headers = new Headers(p_headers)
           headers.append('signature', hmac)
+          headers.append('platform', 'puoti-kirjontastudiohelmi')
           headers.append('content-type','application/json; charset=utf-8')
           const response = await fetch(paytrail_url, {
             method: 'POST',
@@ -126,18 +328,11 @@ export const actions: Actions = {
             body: JSON.stringify(body)
           })
           
-          const r_headers : PaytrailHeaders = {}
+ 
           const r_body = await response.json()
-          let r_sig
-          for (const [name, value] of response.headers.entries()) {
-            if (name.startsWith('checkout-')) {
-                r_body[name] = value
-            } else if (name == 'signature') {
-                r_sig = value
-            }
-          }
-          if (!r_sig || r_sig != calculateHmac(p_env.PAYTRAIL_SECRET, r_headers, r_body)) {
-            errors.push('Maksupalvelun antama viesti ei ole oikein allekirjoitettu')
+  
+          if (!hmacHelper(p_env.PAYTRAIL_SECRET, response.headers, r_body)) {
+            errors.push('Maksupalvelun antama vastaus ei ole oikein allekirjoitettu')
           }
           return {email, amount, errors, providers: r_body.providers}
     }
