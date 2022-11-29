@@ -70,7 +70,7 @@ model Tilaus {
   tuotteet       TuoteTilaukset[]
   email          String
   summa          Int
-  maksettu       Boolean          @default(false)
+  status         String?
   toimitettu     Boolean          @default(false)
   transaction_id String?
   luotu          DateTime         @default(now())

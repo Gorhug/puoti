@@ -1,7 +1,7 @@
 import crypto from 'crypto'
-
-const ACCOUNT = '375917';
-const SECRET = 'SAIPPUAKAUPPIAS';
+import {env as p_env} from '$env/dynamic/private'
+const ACCOUNT = p_env.PAYTRAIL_ACCOUNT;
+const SECRET = p_env.PAYTRAIL_SECRET;
 
 /**
  * Calculate HMAC
@@ -20,7 +20,7 @@ export const calculateHmac = (secret: string, params: PaytrailHeaders, body: obj
   return crypto.createHmac('sha256', secret).update(hmacPayload).digest('hex');
 };
 
-export function hmacHelper(secret: string, params: URLSearchParams|Headers, body: object|undefined = undefined) {
+export function hmacCheck(secret: string, params: URLSearchParams|Headers, body: object|undefined = undefined) {
   let r_sig
   const r_headers: PaytrailHeaders = {}
 
@@ -70,6 +70,8 @@ const body = {
   },
 };
 
-// Expected HMAC: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
-//calculateHmac(SECRET, headers, body);
+//  Expected HMAC: 3708f6497ae7cc55a2e6009fc90aa10c3ad0ef125260ee91b19168750f6d74f6
+export function testHmac () {
+   return calculateHmac(SECRET, headers, body);
+}
 
