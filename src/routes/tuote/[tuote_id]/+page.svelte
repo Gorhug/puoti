@@ -104,12 +104,22 @@
 <h2 class="text-2xl my-4">{data.hinta}&nbsp;€</h2>
 <button class="{inputStyle}" on:click={addItem}>Lisää ostoskoriin</button>
 <p>
+{#if carouselPhotos.length > 0}
+	
 
-	{#each [carouselPhotos[index]] as src (index)}
+{#each [carouselPhotos[index]] as src (index)}
 	<img {src} alt="tuotekuva {index+1}" />	
 {/each}
 
+{#if carouselPhotos.length > 1}
+	
 <button  class="{inputStyle}" on:click={next}>Seuraava kuva</button>
+
+{/if}
+
+{:else}
+	<p class="italic my-4">Ei tuotekuvia saatavilla</p>
+{/if}
 
 </p>
 

@@ -18,32 +18,20 @@ function valitutMapper(k: TuoteKategoria) {
 }
 const example = {
     "resources":
-        [{
-            "public_id": "cloudinary_fashion_logo", "version": 1588962712, "format": "png",
-            "width": 240, "height": 307, "type": "upload", "created_at": "2020-05-08T18:31:52Z",
-            "metadata": [{
-                "external_id": "color_id", "label": "Colors", "type": "set", "value":
-                    [{ "external_id": "color1", "value": "red" }, { "external_id": "color2", "value": "green" }]
-            }]
-        },
-        {
-            "public_id": "amazon_logo", "version": 1315740184, "format": "png",
-            "width": 162, "height": 38, "type": "upload", "created_at": "2011-09-11T11:23:04Z"
-        },
-        {
-            "public_id": "microsoft_logo", "version": 1315740090, "format": "png",
-            "width": 216, "height": 70, "type": "upload", "created_at": "2011-09-11T11:21:30Z"
-        },
-        {
-            "public_id": "apple_logo", "version": 1315740074, "format": "jpg",
-            "width": 206, "height": 250, "type": "upload", "created_at": "2011-09-11T11:21:14Z",
-            "context": { "custom": { "Main": "true", "Order": "2" } }
-        },
-        {
-            "public_id": "google_logo", "version": 1315740052, "format": "png",
-            "width": 275, "height": 95, "type": "upload", "created_at": "2011-09-11T11:20:52Z",
-            "context": { "custom": { "alt": "google logo", "caption": "Google Logo" } }
-        }],
+        [
+        //     {
+        //     "public_id": "samples/ecommerce/accessories-bag", "version": 1588962712, "format": "png",
+        //     "width": 240, "height": 307, "type": "upload", "created_at": "2020-05-08T18:31:52Z",
+        //     "metadata": [{
+        //         "external_id": "color_id", "label": "Colors", "type": "set", "value":
+        //             [{ "external_id": "color1", "value": "red" }, { "external_id": "color2", "value": "green" }]
+        //     }]
+        // },
+        // {
+        //     "public_id": "samples/ecommerce/shoes", "version": 1315740184, "format": "png",
+        //     "width": 162, "height": 38, "type": "upload", "created_at": "2011-09-11T11:23:04Z"
+        // }
+        ],
     "updated_at": "2020-05-08T21:11:37Z"
 }
 
@@ -74,7 +62,7 @@ export const load: PageServerLoad = async ({ params }) => {
         const response = await fetch(request)
         img_list = await response.json()
     } catch (e) {
-        console.log(e)
+  //      console.log(e)
     }
     const simple_list: string[] = []
     for (const img of img_list.resources) {
