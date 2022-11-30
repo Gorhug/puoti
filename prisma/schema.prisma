@@ -12,19 +12,19 @@ model Viesti {
   email      String
   aihe       String
   viesti     String
-  uutiskirje Boolean?
+  uutiskirje Boolean  @default(false)
   milloin    DateTime @default(now())
 
   @@id([email, milloin])
 }
 
 model TuoteKategoria {
-  kategoria_id String    @id @default(cuid())
-  nimi         String    @unique
+  kategoria_id String   @id @default(cuid())
+  nimi         String   @unique
   kuvaus       String?
   tuotteet     Tuote[]
-  luotu        DateTime  @default(now())
-  paivitetty   DateTime? @updatedAt
+  luotu        DateTime @default(now())
+  paivitetty   DateTime @updatedAt
 }
 
 model Tuote {
@@ -33,32 +33,59 @@ model Tuote {
   kuvaus     String?
   hinta      Decimal
   kategoriat TuoteKategoria[]
+  tilaukset  TuoteTilaukset[]
   luoja      User             @relation(fields: [luoja_id], references: [id])
   luoja_id   String
   luotu      DateTime         @default(now())
-  paivitetty DateTime?        @updatedAt
+  paivitetty DateTime         @updatedAt
 }
 
 model User {
-  id               String         @id @unique
-  identifier_token String         @unique
-  hashed_password  String?
-  RefreshToken     RefreshToken[]
-  username         String         @unique
-  email            String?
-  tuotteet         Tuote[]
-  luotu            DateTime       @default(now())
-  paivitetty       DateTime?      @updatedAt
+  id              String    @id @unique @default(cuid())
+  provider_id     String    @unique
+  hashed_password String?
+  session         Session[]
+  username        String    @unique
+  email           String?
+  tuotteet        Tuote[]
+  luotu           DateTime  @default(now())
+  paivitetty      DateTime  @updatedAt
 
   @@map("user")
 }
 
-model RefreshToken {
-  id            Int    @id @unique @default(autoincrement())
-  refresh_token String @unique
-  user          User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
-  user_id       String
+model Session {
+  id           String @id @unique
+  user_id      String
+  expires      BigInt
+  idle_expires BigInt
+  user         User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
   @@index([user_id])
-  @@map("refresh_token")
+  @@map("session")
+}
+
+model Tilaus {
+  id             String           @id @unique @default(cuid())
+  tuotteet       TuoteTilaukset[]
+  email          String
+  summa          Int
+  status         String?
+  toimitettu     Boolean          @default(false)
+  transaction_id String?
+  luotu          DateTime         @default(now())
+  paivitetty     DateTime         @updatedAt
+}
+
+model TuoteTilaukset {
+  tilaus     Tilaus   @relation(fields: [tilaus_id], references: [id])
+  tilaus_id  String
+  tuote      Tuote    @relation(fields: [tuote_id], references: [tuote_id])
+  tuote_id   String
+  lkm        Int
+  a_hinta    Int // eurosentti
+  luotu      DateTime @default(now())
+  paivitetty DateTime @updatedAt
+
+  @@id([tilaus_id, tuote_id])
 }

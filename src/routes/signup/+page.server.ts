@@ -1,15 +1,8 @@
-// import type { PageServerLoad } from './$types';
-
-// export const load: PageServerLoad = async () => {
-//     return {};
-// };
-
 import { auth } from '$lib/server/lucia';
-import { invalid, redirect, type Actions } from '@sveltejs/kit';
-import { setCookie } from 'lucia-sveltekit';
+import { invalid, type Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {
-	default: async ({ request, cookies }) => {
+	default: async ({ request, locals }) => {
 		const form = await request.formData();
 		const username = form.get('username');
 		const password = form.get('password');
@@ -19,21 +12,23 @@ export const actions: Actions = {
 			});
 		}
 		try {
-			const createUser = await auth.createUser('username', username, {
+			const nyt = new Date()
+			const user = await auth.createUser('username', username, {
 				password,
-				user_data: {
-					username
+				attributes: {
+					username,
+					email: null,
+					luotu: nyt,
+					paivitetty: nyt
 				}
 			});
-			setCookie(cookies, ...createUser.cookies);
+			const session = await auth.createSession(user.userId);
+			locals.setSession(session);
 		} catch (e) {
 			const error = e as Error;
-			if (
-				error.message === 'AUTH_DUPLICATE_IDENTIFIER_TOKEN' ||
-				error.message === 'AUTH_DUPLICATE_USER_DATA'
-			) {
+			if (error.message === 'AUTH_DUPLICATE_PROVIDER_ID') {
 				return invalid(400, {
-					message: 'Username unavailable'
+					message: 'Username already in use'
 				});
 			}
 			console.error(error);
@@ -41,6 +36,14 @@ export const actions: Actions = {
 				message: 'Unknown error occurred'
 			});
 		}
-		throw redirect(302, '/login');
 	}
+};
+
+import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+
+export const load: PageServerLoad = async ({ locals }) => {
+	const session = await locals.getSession();
+	if (session) throw redirect(302, '/');
+	return {};
 };

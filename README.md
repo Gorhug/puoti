@@ -2,6 +2,8 @@
 
 Kirjontastudio Helmi -projekti Copyright 2022 Ilkka Forsblom
 
+[demo-versio](https://puoti-production.up.railway.app/)
+
 ## Pikaohje:
 
 Kopioi .env.example -> .env -tiedostoksi ja täytä tarvittavat kohdat.
@@ -17,6 +19,30 @@ Dev-ympäristö käynnistys (avaa selaimen):
 ```bash
 npm run dev -- --open
 ```
+
+
+
+## Käytetyt kirjastot ja komponentit
+
+
+[lucia-sveltekit](https://lucia-sveltekit.vercel.app/)
+
+  Käyttäjänhallinta (tällä hetkellä projektissa vanhentunut versio, uusi versio on selkeämpi ja toimivampi, toivon mukaan). Vain sveltekit-käyttöön
+
+[remarkable](https://github.com/jonschlinkert/remarkable)
+
+  Markdown-renderöinti. Voi käyttää missä tahansa projektissa selain-javascriptinä, sekä myös node.js -projekteissa
+
+[prisma](https://www.prisma.io/)
+
+  Tietokantakirjasto node.js/Typescript -projekteihin.
+
+[svelecte](https://mskocik.github.io/svelecte/)
+
+  Monivalintaelementti. Tehty sveltelle, mutta voi käyttää javascript/custom element ratkaisuna missä projektissa tahansa.
+
+
+----
 
 Sveltkit-projektin mukana tullut oletusohje:
 

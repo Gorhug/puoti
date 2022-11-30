@@ -1,5 +1,5 @@
 import type { PageServerLoad, Actions } from './$types';
-import { prisma_client, auth } from '$lib/server/lucia';
+import { prisma_client } from '$lib/server/lucia';
 import { invalid } from '@sveltejs/kit';
 import slug from 'slug'
 
@@ -19,11 +19,10 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-    default: async ({ cookies, request }) => {
-        try {
-            await auth.validateFormSubmission(request)
-        } catch (e) {
-            console.log(e)
+    default: async ({ request, locals }) => {
+        const  session  = await locals.getSession()
+    
+        if (!session) {
             return invalid(401, { error: 'Authentication required', nimi: '', kuvaus: '' })
         }
 

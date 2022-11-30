@@ -1,8 +1,4 @@
-// import type { LayoutServerLoad } from './$types';
-import { auth } from "$lib/server/lucia";
+import { handleServerSession } from "@lucia-auth/sveltekit";
+import type { LayoutServerLoad } from "./$types";
 
-// export const load: LayoutServerLoad = async () => {
-//     return {};
-// };
-
-export const load = auth.handleServerSession();
+export const load: LayoutServerLoad = handleServerSession();
