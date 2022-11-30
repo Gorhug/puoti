@@ -70,7 +70,9 @@
 		Kirjoita sähköpostiosoite (esim: matti@example.com)
 	</p>
 
-	<input class="p-2 my-4 {inputStyle}" type="submit" id="submit" value="Siirry tilaamaan" />
+	<input class="p-2 my-4 {inputStyle}" type="submit" id="submit" value="Siirry maksamaan" />
+	<p class="m-8 text-xl">Huom! Tämä on demosivusto, käytä maksuun 
+		<a class={linkStyle} target="_blank" rel="noreferrer" href="https://docs.paytrail.com/#/payment-method-providers?id=test-credentials">testitunnuksia</a></p>
 	{#if false}
 		<input
 			formnovalidate

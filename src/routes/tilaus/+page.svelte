@@ -23,6 +23,7 @@
 <p class="text-xl mb-8">Loppusumma: {(form.amount/100).toFixed(2)}&nbsp;€</p>
 <p class="text-xl mb-8">Valitse maksutapa</p>
 {#if providers}
+<div class="w-96 flex flex-row flex-wrap">
 {#each providers as provider}
     <form method='post' action={provider.url}>
     {#each provider.parameters as param}
@@ -31,6 +32,7 @@
     <button class='w-32 h-32 mb-8 {inputStyle}'><img src={provider.svg} alt={provider.name}/></button>
     </form>
 {/each}
+</div>
 {/if}
 
 {/if}
