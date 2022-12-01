@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { applyAction, enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
 	import { PUBLIC_BRAND } from '$env/static/public';
 	import {inputStyle, linkStyle} from '$lib/tyylit'
 	
@@ -23,6 +24,12 @@
 				form.message = 'Invalid input';
 				cancel();
 			}
+			// return async({result, update}) => {
+			// 	if (result.type == 'redirect') {
+			// 		await invalidateAll()
+			// 	}
+			// 	update()
+			// }
 		}}
 	>
 		<label for="username">Käyttäjänimi:</label><br />
