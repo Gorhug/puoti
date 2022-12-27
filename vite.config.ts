@@ -4,7 +4,7 @@ import type { UserConfig } from 'vite';
 const config: UserConfig = {
 	plugins: [sveltekit()],
 	ssr: {
-		noExternal: ["@lucia-auth/sveltekit"]
+		noExternal: []
 	}
 };
 

@@ -72,6 +72,7 @@
 	class="p-2 mt-8 {inputStyle}"
 	on:click={async () => {
 		await signOut();
-		await invalidateAll();
+		document.location.reload()
+		//await invalidateAll();
 	}}>Kirjaudu ulos</button
 >

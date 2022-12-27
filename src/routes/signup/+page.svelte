@@ -25,6 +25,13 @@
 			form.message = 'Invalid input';
 			cancel();
 		}
+		return async ({result, update}) => {
+			if (result.type === 'success') {
+				document.location.reload()
+			} else {
+				update()
+			}
+		}
 	}}
 >
 	<div>

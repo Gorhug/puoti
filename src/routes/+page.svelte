@@ -5,6 +5,7 @@
 <svelte:head>
 	<title>{PUBLIC_BRAND}</title>
 </svelte:head>
+
 <div class="space-y-4 md:columns-2 xl:columns-3">
 	<p>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam varius commodo facilisis. Donec
