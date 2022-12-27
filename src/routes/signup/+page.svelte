@@ -3,7 +3,7 @@
 
 	// export let data: PageData;
 
-	import { applyAction, enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 	import { PUBLIC_BRAND } from '$env/static/public';
 	import { inputStyle, linkStyle } from '$lib/tyylit';
 	export let form: { message?: string };
@@ -25,14 +25,13 @@
 			form.message = 'Invalid input';
 			cancel();
 		}
-		return async ({ result }) => {
-			if (result.type === 'redirect') {
-				window.location.href = result.location; // invalidateAll() + goto() will not work
-				return;
+		return async ({result, update}) => {
+			if (result.type === 'success') {
+				document.location.reload()
+			} else {
+				update()
 			}
-
-			applyAction(result);
-		};
+		}
 	}}
 >
 	<div>
@@ -71,7 +70,5 @@
 </form>
 <p class="error">{form?.message || ''}</p>
 <p class="mt-8">
-	<a class="{linkStyle}" href="/login"
-		>Kirjaudu sisään</a
-	>
+	<a class={linkStyle} href="/login">Kirjaudu sisään</a>
 </p>

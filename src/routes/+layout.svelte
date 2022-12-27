@@ -8,9 +8,7 @@
 	import { PUBLIC_BRAND } from '$env/static/public';
 	import { getUser } from '@lucia-auth/sveltekit/client';
 
-	const user = getUser();
-	const userId = $user?.userId;
-	// import type { LayoutData } from './$types';
+	let user = getUser();
 
 	// export let data: LayoutData;
 	const linkStyle =
@@ -27,6 +25,8 @@
 		links.push(['login', 'Kirjaudu']);
 	}
 	import { kori } from '$lib/kori';
+
+	
 	$: total = $kori.tuotteet.reduce((sum, item) => sum + item.a_hinta * item.lkm, 0);
 	$: lkm = $kori.tuotteet.reduce((sum, item) => sum + item.lkm, 0)
 </script>

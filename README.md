@@ -4,6 +4,21 @@ Kirjontastudio Helmi -projekti Copyright 2022 Ilkka Forsblom
 
 [demo-versio](https://puoti-production.up.railway.app/)
 
+Ensimmäinen oikea webohjelmointiprojektini, 
+työkaluna lähinnä Sveltekit + kirjastoja (kirjastoja listattu alla).
+
+Hyvää:
+- toimii niiltä osin kuin projektia rajannut (kirjautuminen, tuotelisäykset, ostoskori, maksaminen)
+
+Huonoa:
+- olisi pitänyt ottaa jokin UI-kirjasto alusta lähtien käyttöön, 
+  tässä mentiin käsityönä (oli sentään tailwind apuna)
+- lomaketarkistuksiin samoin olisi kirjasto ollut kiva (Yup esimerkiksi)
+- toimintalogiikkaa vähemmän UI:n seassa ja modulaarisempi 
+  (esim. Markdown-editori olisi selkeästi oltava oma komponentti)
+- paljon vielä tehtävää (oikeat tuotekategoria -ja tuotesivut, käyttäjäoikeushallinta, ym...)
+
+
 ## Pikaohje:
 
 Kopioi .env.example -> .env -tiedostoksi ja täytä tarvittavat kohdat.
@@ -24,23 +39,23 @@ npm run dev -- --open
 
 ## Käytetyt kirjastot ja komponentit
 
+Näistä osa on projektissa vanhoja versioita, API-muutokset tarkoittavat ettei voi ihan suoraan päivittää, tosin muutokset eivät isoja.
 
 [lucia-sveltekit](https://lucia-sveltekit.vercel.app/)
 
-  Käyttäjänhallinta (tällä hetkellä projektissa vanhentunut versio, uusi versio on selkeämpi ja toimivampi, toivon mukaan). Vain sveltekit-käyttöön
+  Sisäänkirjautumissysteemi.
 
 [remarkable](https://github.com/jonschlinkert/remarkable)
 
-  Markdown-renderöinti. Voi käyttää missä tahansa projektissa selain-javascriptinä, sekä myös node.js -projekteissa
+  Markdown-renderöinti. 
 
 [prisma](https://www.prisma.io/)
 
-  Tietokantakirjasto node.js/Typescript -projekteihin.
+  Tietokantakirjasto/ORM.
 
 [svelecte](https://mskocik.github.io/svelecte/)
 
-  Monivalintaelementti. Tehty sveltelle, mutta voi käyttää javascript/custom element ratkaisuna missä projektissa tahansa.
-
+  Monivalintaelementti. 
 
 ----
 

@@ -31,6 +31,7 @@ export const actions: Actions = {
 				message: 'Unknown error occurred'
 			});
 		}
+		return { reload: true }
 	}
 };
 
