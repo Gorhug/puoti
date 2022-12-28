@@ -4,18 +4,22 @@ Kirjontastudio Helmi -projekti Copyright 2022 Ilkka Forsblom
 
 [demo-versio](https://puoti-production.up.railway.app/)
 
-Ensimmäinen oikea webohjelmointiprojektini, 
+Ensimmäinen oikea webohjelmointiprojektini, Omnian webohjelmointikurssin projektityönä tehty,
 työkaluna lähinnä Sveltekit + kirjastoja (kirjastoja listattu alla).
+
+Tavoitteena oli luoda verkkokauppa, jossa tuotehallinta (tuotteiden ja tuotekategorioiden lisäys),
+ostoskori ja maksutoiminto (Paytrail-integrointi). Projekti tuli rajattua varsin pelkistetyksi 
+koska aikaa ei ollut paljon.
+
 
 Hyvää:
 - toimii niiltä osin kuin projektia rajannut (kirjautuminen, tuotelisäykset, ostoskori, maksaminen)
 
-Huonoa:
-- olisi pitänyt ottaa jokin UI-kirjasto alusta lähtien käyttöön, 
+Parannettavaa ja muuta opittua:
+- olisi pitänyt ottaa jokin UI-komponenttikirjasto alusta lähtien käyttöön, 
   tässä mentiin käsityönä (oli sentään tailwind apuna)
-- lomaketarkistuksiin samoin olisi kirjasto ollut kiva (Yup esimerkiksi)
-- toimintalogiikkaa vähemmän UI:n seassa ja modulaarisempi 
-  (esim. Markdown-editori olisi selkeästi oltava oma komponentti)
+- lomaketarkistuksiin samoin olisi kirjasto ollut kiva
+- modulaarisempi (esim. Markdown-editori olisi selkeästi oltava oma komponentti)
 - paljon vielä tehtävää (oikeat tuotekategoria -ja tuotesivut, käyttäjäoikeushallinta, ym...)
 
 
