@@ -124,7 +124,7 @@ ___
 					bind:this={esikatselu}
 					on:scroll={vieritaEditori}
 					id="esikatselu"
-					class="markdown w-full h-48 space-y-3 overflow-scroll border border-dashed border-black"
+					class="w-full h-48 space-y-3 overflow-scroll border border-dashed border-black prose-slate table-container"
 				>
 					{@html md.render(markdown)}
 				</div>

@@ -35,13 +35,17 @@
 <svelte:head>
 	<title>Ostoskori - {PUBLIC_BRAND}</title>
 </svelte:head>
-<table>
-    <th class="w-24">Tuote</th><th class="w-18">à-hinta</th><th class="w-24">lkm</th>
+<div class="table-container sm:w-2/3">
+<table class="table">
+	<thead>
+    <th class="text-left">Tuote</th><th class="text-right">à-hinta</th><th class="text-right">lkm</th>
+</thead>
+<tbody>
 {#each $kori.tuotteet as tuote (tuote.tuoteId)}
     <tr animate:flip>
         <td><a href=/tuote/{tuote.tuoteId} class={linkStyle}>{tuote.nimi}</a></td>
-        <td>{tuote.a_hinta.toFixed(2)}</td>
-        <td>
+        <td class="text-right">{tuote.a_hinta.toFixed(2)}</td>
+        <td class="text-right">
             <button class="{inputStyle} text-lg" on:click={() => removeItem(tuote.tuoteId)}>&nbsp;-&nbsp;</button>
             {tuote.lkm} 
             <button class="{inputStyle} text-lg" on:click={() => addItem(tuote.tuoteId)}>&nbsp;+&nbsp;</button>
@@ -49,8 +53,9 @@
 
     </tr>
 {/each}
+</tbody>
 </table>
-
+</div>
 {#if $kori.tuotteet.length > 0}
 <form class="space-y-4 mt-8 flex flex-col px-8 w-96" method="POST" action="/tilaus">
 <div>

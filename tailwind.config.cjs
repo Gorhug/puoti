@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{html,js,svelte,ts}'],
+  darkMode: 'class',
+  content: [
+    './src/**/*.{html,js,svelte,ts}',
+    require('path').join(require.resolve('@skeletonlabs/skeleton'),'./src/**/*.{html,js,svelte,ts}')
+  ],
   theme: {
     extend: {
       colors: {
@@ -10,5 +14,9 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@skeletonlabs/skeleton/tailwind/theme.cjs'),
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
 }
